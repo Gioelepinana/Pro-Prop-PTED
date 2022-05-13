@@ -3,12 +3,12 @@
 **Patterns & Trends in Environmental Data / Computational Movement
 Analysis Geo 880**
 
-| Semester:      | FS22                              |
-|----------------|---------------------------------- |
-| **Data:**      | Wild Boar Movement Data           |
-| **Title:**     | The title of your project         |
-| **Student 1:** | Name of Student 1                 |
-| **Student 2:** | Name of Student 2                 |
+| Semester:      | FS22                                |
+|----------------|-------------------------------------|
+| **Data:**      | Wild Boar Movement Data             |
+| **Title:**     | Movement analysis of wild boar data |
+| **Student 1:** | Gioele Pinana                       |
+| **Student 2:** | Mathujah Manikkak                   |
 
 ## Abstract 
 <!-- (50-60 words) -->
@@ -23,13 +23,13 @@ Analysis Geo 880**
 <!-- What data will you use? Will you require additional context data? Where do you get this data from? Do you already have all the data? -->
 
 ## Analytical concepts
-<!-- Which analytical concepts will you use? What conceptual movement spaces and respective modelling approaches of trajectories will you be using? What additional spatial analysis methods will you be using? -->
+<!-- Which analytical concepts will you use? What conceptual movement spaces and respective modelling approaches of trajectories will you be using? What additional spatial analysis methods will you be using? --> 
 
 ## R concepts
-<!-- Which R concepts, functions, packages will you mainly use. What additional spatial analysis methods will you be using? -->
+<!-- Which R concepts, functions, packages will you mainly use. What additional spatial analysis methods will you be using? --> 
 
 ## Risk analysis
-<!-- What could be the biggest challenges/problems you might face? What is your plan B? -->
+<!-- What could be the biggest challenges/problems you might face? What is your plan B? --> 
 
 ## Questions? 
 <!-- Which questions would you like to discuss at the coaching session? -->
