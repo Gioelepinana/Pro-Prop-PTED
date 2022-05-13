@@ -8,7 +8,7 @@ Analysis Geo 880**
 | **Data:**      | Wild Boar Movement Data             |
 | **Title:**     | Movement analysis of wild boar data |
 | **Student 1:** | Gioele Pinana                       |
-| **Student 2:** | Mathujah Manikkak                   |
+| **Student 2:** | Mathujah Manikkan                   |
 
 ## Abstract 
 <!-- (50-60 words) -->
