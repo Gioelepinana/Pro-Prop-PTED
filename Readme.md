@@ -8,28 +8,28 @@ Analysis Geo 880**
 | **Data:**      | Wild Boar Movement Data             |
 | **Title:**     | Movement analysis of wild boar data |
 | **Student 1:** | Gioele Pinana                       |
-| **Student 2:** | Mathujah Manikkan    |
+| **Student 2:** | Mathujah Manikkan                   |
 
 ## Abstracst 
-<!-- (50-60 words) -->
+<!-- (50-60 words) --> todo mathujah 
 
 ## Research Questions
-<!-- (50-60 words) -->
+<!-- (50-60 words) --> got it
 
 ## Results / products
-<!-- What do you expect, anticipate? -->
+<!-- What do you expect, anticipate? --> todo mathujah
 
 ## Data
-<!-- What data will you use? Will you require additional context data? Where do you get this data from? Do you already have all the data? -->
+<!-- What data will you use? Will you require additional context data? Where do you get this data from? Do you already have all the data? --> got it, maybe more
 
 ## Analytical concepts
-<!-- Which analytical concepts will you use? What conceptual movement spaces and respective modelling approaches of trajectories will you be using? What additional spatial analysis methods will you be using? --> 
+<!-- Which analytical concepts will you use? What conceptual movement spaces and respective modelling approaches of trajectories will you be using? What additional spatial analysis methods will you be using? --> todo gioele
 
 ## R concepts
-<!-- Which R concepts, functions, packages will you mainly use. What additional spatial analysis methods will you be using? --> 
+<!-- Which R concepts, functions, packages will you mainly use. What additional spatial analysis methods will you be using? --> todo gioele
 
 ## Risk analysis
-<!-- What could be the biggest challenges/problems you might face? What is your plan B? --> 
+<!-- What could be the biggest challenges/problems you might face? What is your plan B? --> no risk no fun
 
 ## Questions? 
-<!-- Which questions would you like to discuss at the coaching session? -->
+<!-- Which questions would you like to discuss at the coaching session? --> todo
