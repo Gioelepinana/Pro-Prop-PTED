@@ -30,7 +30,7 @@ Since the two questions are not related together, we are going to approach the t
 To answer the second question, the idea is to study the influence that roads and trails (as an index of disturbance) have on wild boars. To do this, wild boar movements will have to be compared with simulated wild boar movements. In this way, it will be possible to determine whether the wild boars have become accustomed to the presence of humans. 
 
 ## R concepts
-<!-- Which R concepts, functions, packages will you mainly use. What additional spatial analysis methods will you be using? 
+<!-- Which R concepts, functions, packages will you mainly use. What additional spatial analysis methods will you be using? -->
 To import and to manipulate tabular data we use the libraries "readr" and "dplyr". ggplot2-package is used to plot data and sf-package to handle spatial vector data. Since we are working on time-data we also need the library "lubridate". Other packages will be loaded and used if needed. 
 
 ## Risk analysis
