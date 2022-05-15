@@ -20,7 +20,7 @@ B: ...the impact of hiking trails is analyzed.
 ## Research Questions
 <!-- (50-60 words) -->
 * How can the effectiveness of scare-off measures on wild boar be measured?  
-* Which impact do hiking trails (disturbance element) have on the movement patterns of wild boars?  (Territory use / trail density) Influence with Parameters such as topology, land cover use, etc.) 
+* Which impact do hiking trails (disturbance element) have on the movement patterns of wild boars?
 
 ## Results / products
 <!-- What do you expect, anticipate? -->
@@ -39,8 +39,10 @@ B: If we compare two wild boar movement with and without hiking trails, we expec
 
 ## Analytical concepts
 <!-- Which analytical concepts will you use? What conceptual movement spaces and respective modelling approaches of trajectories will you be using? What additional spatial analysis methods will you be using? --> 
-Since the two questions are not related together, we are going to approach the two questions separately. The idea behind the first question is to compare similar but different approach, in order to determine the better way to measure the effectiveness of scare-off measures, from a statistical but also ecological perspective. Wild boars move through space following a typical limited 2D Euclidean space. 
-To answer the second question, the idea is to study the influence that roads and trails (as an index of disturbance) have on wild boars. To do this, wild boar movements will have to be compared with simulated wild boar movements. In this way, it will be possible to determine whether the wild boars have become accustomed to the presence of humans. 
+Since the two questions are not related together, we are going to approach them separately. The idea behind the first question is to compare different way to measure the effectiveness of scare-off measures, in order to determine the better one, from a statistical but also ecological perspective. 
+To answer the second question, the idea is to study the influence that roads and trails (as an index of disturbance) have on wild boars. To do this, wild boar movements will have to be compared with simulated wild boar movements. In this way, it will be possible to determine whether the wild boars have become accustomed to disturbance. 
+
+Wild boars move through space following a typical limited 2D Euclidean space. 
 
 ## R concepts
 <!-- Which R concepts, functions, packages will you mainly use. What additional spatial analysis methods will you be using? -->
