@@ -24,8 +24,8 @@ B: ...the impact of hiking trails is analyzed.
 
 ## Results / products
 <!-- What do you expect, anticipate? -->
-A: 
-B: 
+A: Maps
+B: If we compare two wild boar movement with and without hiking trails, we expect that the distance with hiking trails is longer. Product: Map
 
 ## Data
 <!-- What data will you use? Will you require additional context data? Where do you get this data from? Do you already have all the data? -->
