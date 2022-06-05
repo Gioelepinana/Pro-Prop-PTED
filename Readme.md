@@ -47,7 +47,7 @@ To answer the second question, the idea is to study the influence that roads and
 To import and to manipulate tabular data we use the libraries "readr" and "dplyr". ggplot2-package is used to plot data and sf-package to handle spatial vector data. Since we are working on time-data we also need the library "lubridate". Other packages will be loaded and used if needed. 
 
 ## Risk analysis
-<!-- What could be the biggest challenges/problems you might face? What is your plan B? --> no risk no fun
+<!-- What could be the biggest challenges/problems you might face? What is your plan B? --> 
 
 ## Questions? 
 <!-- Which questions would you like to discuss at the coaching session? -->

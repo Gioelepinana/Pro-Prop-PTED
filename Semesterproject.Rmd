@@ -1,7 +1,7 @@
 ---
 title: The title of your Semesterproject
-subtitle: A subtle subtitle
-author: Firstname1 Lastname1 and Firstname2 Lastname2
+subtitle: Semesterproject 022, Patterns and Trends in Environmental Data - Computational Movement Analysis
+author: Mathujah Manikkan and Gioele Pinana
 output: html_document
 
 ---
@@ -24,6 +24,18 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
 ```
 
+
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+
+install.packages("devtools") # <- if you havent installed devtools already
+devtools::install_github("ComputationalMovementAnalysis/ComputationalMovementAnalysisData")
+
+library(ComputationalMovementAnalysisData)
+
+head(wildschwein_BE)
+
+```
 
 ## Abstract
 
