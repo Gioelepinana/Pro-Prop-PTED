@@ -1,5 +1,5 @@
 ---
-title: The title of your Semesterproject
+title: How can the effectiveness of scare-off measure on wild boar be measured? 
 subtitle: Semesterproject 022, Patterns and Trends in Environmental Data - Computational Movement Analysis
 author: Mathujah Manikkan and Gioele Pinana
 output: html_document
