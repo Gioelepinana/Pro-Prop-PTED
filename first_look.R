@@ -1,23 +1,23 @@
 ## Question: How can the effectiveness of scare-off measure on wild boar be measured? 
 
 ## Two methods to confront (pros and cons)
-    # 1: measure the mean distance between wild boar location and schreck 
+    # 1: measure the mean distance between wild boar location and scare-off 
     #    (mean distance between two consecutive location) and build a graph / map 
-    # 2: confront the mean distance between wild boar and schreck when the 
-    #    the schrecks are turned on and when the schrecks are turned off
+    # 2: confront the mean distance between wild boar and scare-off when the
+    #    scare-off are turned on and when the scare-off are turned off
 
 ## Approach: 
     # 1: here we have to define what is effective in our opinion --> The wild boar 
-    #    leaves and stays at a distance from the schreck for at least two days
-    #     - define relevant schreck-locations: the ones near the wild boar
+    #    leaves and stays at a distance from the scare-off for at least two days
+    #     - define relevant scare-off-locations: the ones near the wild boar
     #     - choose 3 wild boars to do the analysis  
-    #     - enter the coordinates of the relevant schrecks into the boar table. 
+    #     - enter the coordinates of the relevant scare-off into the boar table. 
     #     - calculate distances 
     #     - 
     # 2: here we measure a statistical effectiveness using p-value: 
-    #     - define relevant schreck-locations: the ones near the wild boar 
+    #     - define relevant scare-off-locations: the ones near the wild boar 
     #     - choose 3 wild board to do the analysis (same as above)
-    #     - enter the coordinates of the relevant schrecks into the boar table. 
+    #     - enter the coordinates of the relevant scare-off into the boar table. 
     #     - calculate distances 
 
 ## Libraries 
@@ -95,7 +95,7 @@ wildschwein_convex_hull %>%
   theme(legend.position = "none")
 
 
-## Change coordinates schreck lacations from gps to CH1903+ / LV95
+## Change coordinates scare-off lacations from gps to CH1903+ / LV95
 ## first transform dataframe into a spatial object
 schreck_locations_swiss_coord <- st_as_sf(schreck_locations, 
                               coords = c("lon", "lat"), 
@@ -114,18 +114,18 @@ target = c("Sabine", "Ruth", "Rosa", "Nicole", "Isabelle","Fritz","Caroline")
 w <- wildschwein_BE_spatial %>%
   filter(TierName %in% target)
 
-## Plotting the location of the schreck
+## Plotting the location of the scare-off 
 ggplot(schreck_locations_swiss_coord)+
   geom_sf() +
   coord_sf(datum = 2056) 
 
-## Plotting wild board together with locations schreck 
+## Plotting wild board together with locations scare-off  
 ggplot()+
   geom_sf(data = schreck_locations_swiss_coord) +
   geom_sf(data = wildschwein_BE_spatial, aes(color = "red")) +
   coord_sf(datum = 2056)
 
-## Plotting the location of the schreck with the corresponding ID, to select the important ones
+## Plotting the location of the scare-off with the corresponding ID, to select the important ones
 ggplot(schreck_locations_swiss_coord, label = "id")+
   geom_sf() +
   coord_sf(datum = 2056)+
@@ -133,14 +133,14 @@ ggplot(schreck_locations_swiss_coord, label = "id")+
   scale_y_continuous(limits=c(1206500,1207000)) +
   scale_x_continuous(limits=c(2570000,2571000))
 
-## select important schreck 
-# the following schreck location are the ones near the wild boards studied and therefore 
+## select important scare-off 
+# the following scare-off location are the ones near the wild boards studied and therefore 
 # they could be suitable for the analysis. 
 target2 = c("WSS_2016_05", "WSS_2016_01", "WSS_2016_13", "WSS_2016_06", "WSS_2015_01","WSS_2015_03","WSS_2015_04","WSS_2014_04","WSS_2014_05","WSS_2014_06","WSS_2017_02","WSS_2017_01","WSS_2017_09","WSS_2017_07","WSS_2017_03","WSS_2017_04")
 schrecks <- schreck_locations_swiss_coord %>%
   filter(id %in% target2)
 
-## plot the important schreck
+## plot the important scare-off
 ggplot(schrecks)+
   geom_sf() +
   coord_sf(datum = 2056)
@@ -186,58 +186,79 @@ Joanna <- wildschwein_BE_spatial %>%
   filter(TierName == "Joanna")
 
 
-## Join two schrecks dataframes
+## Join two scare-off dataframes
 schreck2 <- left_join(schrecks,schreck_agenda,by="id")
 
-## plotting single trajectories with schreck-locations
-# in this graphs choose which schrecks are suitable for the anaylsis 
+## plotting single trajectories with scare-off-locations
+# in this graphs choose which scare-off are suitable for the anaylsis 
 # (the ones near the location of the wild board location)
 # Ueli
 ggplot()+
+  geom_sf(data = Ueli, aes(color = "Ueli")) +
   geom_sf(data = schreck2) +
-  geom_sf(data = Ueli, aes(color = "red")) +
   # geom_sf_label(data = schreck2, aes(label = id)) +
   geom_sf_text(data = schreck2, aes(label = id), size=2, check_overlap = TRUE) +
-  coord_sf(datum = 2056)
+  coord_sf(datum = 2056) +
+  labs(colour = "Legend", title = "Single trajectories with scare-off-locations", subtitle = "Wild boar: Ueli")
 # suitable: 2016_05, 2017_02, 2017_01, 2016_01, 2014_05, 2014_04, 2016_13
 
 # Sabine 
 ggplot()+
+  geom_sf(data = Sabine, aes(color = "Sabine")) +
   geom_sf(data = schreck2) +
-  geom_sf(data = Sabine, aes(color = "red")) +
   # geom_sf_label(data = schreck2, aes(label = id)) +
   geom_sf_text(data = schreck2, aes(label = id), size=2, check_overlap = TRUE) +
-  coord_sf(datum = 2056)
+  coord_sf(datum = 2056) +
+  labs(colour = "Legend", title = "Single trajectories with scare-off-locations", subtitle = "Wild boar: Sabine")
 # suitable: 2014_06, 2017_03, 2016_04, 2014_04, 2014_05
 
 # Caroline 
 ggplot()+
   geom_sf(data = schreck2) +
-  geom_sf(data = Caroline, aes(color = "red")) +
+  geom_sf(data = Caroline, aes(color = "Caroline")) +
   # geom_sf_label(data = schreck2, aes(label = id)) +
   geom_sf_text(data = schreck2, aes(label = id), size=2, check_overlap = TRUE) +
-  coord_sf(datum = 2056)
+  coord_sf(datum = 2056)+
+  labs(colour = "Legend", title = "Single trajectories with scare-off-locations", subtitle = "Wild boar: Caroline")
 # suitable: 2017_07, 2016_13, 2014_04, 2014_05, 2016_01, 2017_02, 2017_01
 
 # Isabelle 
 ggplot()+
   geom_sf(data = schreck2) +
-  geom_sf(data = Isabelle, aes(color = "red")) +
+  geom_sf(data = Isabelle, aes(color = "Isabelle")) +
   # geom_sf_label(data = schreck2, aes(label = id)) +
   geom_sf_text(data = schreck2, aes(label = id), size=2, check_overlap = TRUE) +
-  coord_sf(datum = 2056)
+  coord_sf(datum = 2056) +
+  labs(colour = "Legend", title = "Single trajectories with scare-off-locations", subtitle = "Wild boar: Isabelle")
 # suitable: 2014_05, 2014_04 2016_13
 
 # Rosa 
 ggplot()+
   geom_sf(data = schreck2) +
-  geom_sf(data = Rosa, aes(color = "red")) +
+  geom_sf(data = Rosa, aes(color = "Rosa")) +
   # geom_sf_label(data = schreck2, aes(label = id)) +
   geom_sf_text(data = schreck2, aes(label = id), size=2, check_overlap = TRUE) +
-  coord_sf(datum = 2056)
+  coord_sf(datum = 2056) +
+  labs(colour = "Legend", title = "Single trajectories with scare-off-locations", subtitle = "Wild boar: Rosa")
 # suitable:2017_01, 2017_02, 2016_05, 2014_05, 2014_04
 
-## check if the telemetry period correspond to the time where schrecks are active or not 
+
+#All for fun
+ggplot()+
+  geom_sf(data = Ueli, aes(color = "Ueli"), alpha = .5) +
+  geom_sf(data = Sabine, aes(color = "Sabine"), alpha = .5) +
+  geom_sf(data = Caroline, aes(color = "Caroline"), alpha = .5) +
+  geom_sf(data = Isabelle, aes(color = "Isabelle"), alpha = .5) +
+  geom_sf(data = Rosa, aes(color = "Rosa"), alpha = .5) +
+  geom_sf(data = schreck2) +
+  # geom_sf_label(data = schreck2, aes(label = id)) +
+  geom_sf_text(data = schreck2, aes(label = id), size=2, check_overlap = TRUE) +
+  coord_sf(datum = 2056) +
+  labs(colour = "Legend", title = "Some wild-boar-trajectories with scare-off-locations")
+
+
+
+## check if the telemetry period correspond to the time where scare-off are active or not 
 # I don't know if there is a method or if we have to do this manually...
 # ...
 # Choose definitive 3 wild boar to do the analysis --> Sabine
@@ -256,9 +277,17 @@ Sabine <- Sabine %>%
 
 # Breit --> Longformat
 ggplot(Sabine, aes(Schreck, distance)) +
-  geom_boxplot()
+  geom_boxplot() +
+  labs(title = "Mean distance between wild boar and scare-off", subtitle = "Sabine")+
+  xlab("Mode scare-off") + ylab("Distance")
 
+# T-Test
+# Mean distance when scare-off measures are turned on is smaller than when it's turned off
+Sabine_on <- Sabine %>%
+  filter(Schreck == "on")
+  
+Sabine_off <- Sabine %>%
+  filter(Schreck == "off")
 
-
-
+t.test(Sabine_on$distance,Sabine_off$distance, var.equal = TRUE, alternative = c("greater"))
 
