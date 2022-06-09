@@ -204,12 +204,15 @@ ggplot()+
 
 # Sabine 
 ggplot()+
-  geom_sf(data = Sabine, aes(color = "Sabine")) +
+  geom_point(data = Sabine, aes(X, Y, color = "Sabine")) +
   geom_sf(data = schreck2) +
   # geom_sf_label(data = schreck2, aes(label = id)) +
   geom_sf_text(data = schreck2, aes(label = id), size=2, check_overlap = TRUE) +
   coord_sf(datum = 2056) +
-  labs(colour = "Legend", title = "Single trajectories with scare-off-locations", subtitle = "Wild boar: Sabine")
+  # scale_y_continuous(limits=c(1205150,1205250)) +
+  # scale_x_continuous(limits=c(2570900,2571000)) +
+  theme_classic() +
+  labs(colour = "Legend", title = "Wild boar and scare-off-locations", subtitle = "Wild boar: Sabine")
 # suitable: 2014_06, 2017_03, 2016_04, 2014_04, 2014_05
 
 # Caroline 
@@ -229,7 +232,7 @@ ggplot()+
   # geom_sf_label(data = schreck2, aes(label = id)) +
   geom_sf_text(data = schreck2, aes(label = id), size=2, check_overlap = TRUE) +
   coord_sf(datum = 2056) +
-  labs(colour = "Legend", title = "Single trajectories with scare-off-locations", subtitle = "Wild boar: Isabelle")
+  labs(colour = "Legend", title = "Wild boar and scare-off-locations", subtitle = "Wild boar: Isabelle")
 # suitable: 2014_05, 2014_04 2016_13
 
 # Rosa 
@@ -276,8 +279,9 @@ Sabine <- Sabine %>%
          distance = sqrt((X-2570935)^2+(Y-1205197)^2))
 
 # Breit --> Longformat
-ggplot(Sabine, aes(Schreck, distance)) +
+ggplot(Sabine, aes(Schreck, distance, color = "red")) +
   geom_boxplot() +
+  theme_classic() +
   labs(title = "Mean distance between wild boar and scare-off", subtitle = "Sabine")+
   xlab("Mode scare-off") + ylab("Distance")
 
