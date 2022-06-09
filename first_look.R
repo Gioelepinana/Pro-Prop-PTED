@@ -283,11 +283,14 @@ ggplot(Sabine, aes(Schreck, distance)) +
 
 # T-Test
 # Mean distance when scare-off measures are turned on is smaller than when it's turned off
+# H0: Distance Sabine_on is smaller than Sabine_off
+# H1: Distance Sabine_on is greater than Sabine_off
+
 Sabine_on <- Sabine %>%
   filter(Schreck == "on")
   
 Sabine_off <- Sabine %>%
   filter(Schreck == "off")
 
-t.test(Sabine_on$distance,Sabine_off$distance, var.equal = TRUE, alternative = c("greater"))
+t.test(Sabine_on$distance, Sabine_off$distance, var.equal = TRUE, alternative = c("greater"))
 
