@@ -329,4 +329,6 @@ ggplot()+
   labs(colour = "Legend", title = "Schreck-Mode: Off", subtitle = "Wild boar: Sabine")
 # suitable: 2014_06, 2017_03, 2016_04, 2014_04, 2014_05
 
-
+ggplot()+
+  geom_point(data = Sabine_off, aes(distance, time)
+             

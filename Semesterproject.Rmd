@@ -28,9 +28,6 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
 
-install.packages("devtools") # <- if you havent installed devtools already
-devtools::install_github("ComputationalMovementAnalysis/ComputationalMovementAnalysisData")
-
 library(ComputationalMovementAnalysisData)
 
 head(wildschwein_BE)
@@ -38,15 +35,16 @@ head(wildschwein_BE)
 ```
 
 ## Abstract
-
-<!-- the following is just a placeholder text, remove it!-->
-Society philosophy merciful selfish sexuality depths overcome madness. Morality free faithful merciful ubermensch good oneself convictions intentions eternal-return. Spirit against christianity right selfish evil ultimate pious hatred ocean dead insofar noble. Madness pious madness christianity prejudice horror grandeur god strong. Ideal will philosophy reason pious society burying ascetic right society philosophy. Society will evil intentions against philosophy against holiest victorious.
-
+Over the past few years, the population of wild boars in Switzerland has increased rapidly. As the number of wild boars increases, so does the damage to agriculture, as they seek for food in the fields. To counteract this damage, new preventive measures such as schreck, dogs, staged shots have been developed with the aim of preventing the wild boars from entering the fields. Within this semester project we want to measure the effectiveness of the scare-off measure schreck. 
 
 ## Introduction
 
 <!-- the following is just a placeholder text, remove it!-->
-Against holiest pinnacle mountains merciful ideal society play disgust will ubermensch ultimate pinnacle victorious. Snare value law gains battle pious intentions revaluation strong. Insofar snare faith ideal oneself.
+Until 1945, only a few animals arrive in Switzerland from Germany, France and Italy. Between 1945 and 1952 more frequent wild boars were then recorded in Switzerland and the Principality of Liechtenstein. However, the population was not able to establish itself until between 1970 and 1990. Since 1990, the population of wild boars has been growing strongly, as evidenced by the number of animals shot and killed in traffic accidents. Possible reasons for the strong population increase are milder winters, an additional number of fattening years as well as the almost inexhaustible and mostly freely available food supply on agricultural land. Based on the planned realization of wildlife passages, it is assumed that the population will expand in the Central Plateau as well as in the Pre-Alps in the next few years.
+
+Wild boars are omnivores and spend a large part of their time searching for food, covering an average of 5 km per night. Wild boars are mainly active during the night and as the only representative of the cloven-hoofed animals, they can reach food in the ground. To do this, it digs up the top layer of soil to a depth of 20-60 cm with its snout disc, which is ideally suited for this purpose. In the soil wild boars find large quantities of invertebrates and roots, but also mice, the nests and supplies. Wild boars also find a large part of their food on agricultural land. Particularly popular are corn, wheat and canola. Over the summer and in the fall wild boars eat fat, from which they can then feed over the meager winter months and also in the spring. Wild boars are very loyal to their location, but do not defend a territory. Thus, several herds can be on the move in the same area. Aggressive behavior between the rods occurs only when they occur at the same time at a food source. Depending on the region, the activity areas vary in size, with 2.5-12 km2 for males and 4.5-30 km2 for does.
+
+Agricultural fields can be protected with prevention methods such as electric fencing clasping closures and acoustic reduction methods. In areas with high wild boar densities and near preferred roosting areas, such as water and migratory bird reserves, alternative crops attractive to wild boar should be used. This can not only prevent direct conflicts, but also indirectly limit accessible population growth.
 
 ```{r}
 library(ComputationalMovementAnalysisData)
@@ -63,9 +61,7 @@ Revaluation evil aversion ultimate decrepit disgust decrepit eternal-return nobl
 ```{r}
 # include plots automatically
 
-ggplot(schreck_locations, aes(E, N)) +
-  geom_point() +
-  coord_map()
+
 
 ```
 
@@ -74,6 +70,7 @@ ggplot(schreck_locations, aes(E, N)) +
 
 
 ## Material and Methods
+### 
 
 <!-- the following is just a placeholder text, remove it!-->
 Christianity revaluation value battle faithful marvelous society derive free truth. Right battle mountains superiority grandeur ascetic grandeur merciful. Derive against intentions burying salvation ocean. Right intentions dead victorious ideal spirit evil ultimate joy. Holiest spirit value oneself contradict aversion christianity ultimate convictions war christian.

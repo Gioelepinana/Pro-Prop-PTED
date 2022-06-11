@@ -12,7 +12,7 @@ Analysis Geo 880**
 
 ## Abstracst 
 <!-- (50-60 words) --> 
-Over the past few years, the population of wild boars in Switzerland has increased rapidly. As the number of wild boars increases, so does the damage to agriculture, as they seek for food in the fields. To counteract this damage, new preventive measures such scare-off measures have been developed with the aim of preventing the wild boars from entering the fields. Within this semester project...
+Over the past few years, the population of wild boars in Switzerland has increased rapidly. As the number of wild boars increases, so does the damage to agriculture, as they seek for food in the fields. To counteract this damage, new preventive measures such as "schreck", "dogs", "" have been developed with the aim of preventing the wild boars from entering the fields. Within this semester project...
 
 A: ...the effectiveness of scare-off measures is analyzed. 
 B: ...the impact of hiking trails is analyzed. 
