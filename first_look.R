@@ -279,11 +279,11 @@ Sabine <- Sabine %>%
          distance = sqrt((X-2570935)^2+(Y-1205197)^2))
 
 # Breit --> Longformat
-ggplot(Sabine, aes(Schreck, distance, color = "red")) +
+ggplot(Sabine, aes(Schreck, distance)) +
   geom_boxplot() +
   theme_classic() +
-  labs(title = "Mean distance between wild boar and scare-off", subtitle = "Sabine")+
-  xlab("Mode scare-off") + ylab("Distance")
+  labs(title = "Mean distance between wild boar and schreck-locations", subtitle = "Sabine")+
+  xlab("Mode schreck") + ylab("Distance")
 
 # T-Test
 # Mean distance when scare-off measures are turned on is smaller than when it's turned off
@@ -297,4 +297,36 @@ Sabine_off <- Sabine %>%
   filter(Schreck == "off")
 
 t.test(Sabine_on$distance, Sabine_off$distance, var.equal = TRUE, alternative = c("greater"))
+
+
+par(mfrow=c(1,2))
+
+
+#Compare Mode on and off
+# On
+ggplot()+
+  geom_point(data = Sabine_on, aes(X, Y, color = "Sabine")) +
+  geom_sf(data = schreck2) +
+  # geom_sf_label(data = schreck2, aes(label = id)) +
+  geom_sf_text(data = schreck2, aes(label = id), size=2, check_overlap = TRUE) +
+  coord_sf(datum = 2056) +
+  # scale_y_continuous(limits=c(1205150,1205250)) +
+  # scale_x_continuous(limits=c(2570900,2571000)) +
+  theme_classic() +
+  labs(colour = "Legend", title = "Schreck-Mode: On", subtitle = "Wild boar: Sabine")
+# suitable: 2014_06, 2017_03, 2016_04, 2014_04, 2014_05
+
+#Off
+ggplot()+
+  geom_point(data = Sabine_off, aes(X, Y, color = "Sabine")) +
+  geom_sf(data = schreck2) +
+  # geom_sf_label(data = schreck2, aes(label = id)) +
+  geom_sf_text(data = schreck2, aes(label = id), size=2, check_overlap = TRUE) +
+  coord_sf(datum = 2056) +
+  # scale_y_continuous(limits=c(1205150,1205250)) +
+  # scale_x_continuous(limits=c(2570900,2571000)) +
+  theme_classic() +
+  labs(colour = "Legend", title = "Schreck-Mode: Off", subtitle = "Wild boar: Sabine")
+# suitable: 2014_06, 2017_03, 2016_04, 2014_04, 2014_05
+
 
