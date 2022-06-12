@@ -299,7 +299,7 @@ Sabine_off <- Sabine %>%
 t.test(Sabine_on$distance, Sabine_off$distance, var.equal = TRUE, alternative = c("greater"))
 
 
-par(mfrow=c(1,2))
+par(mfrow=c(1,1))
 
 
 #Compare Mode on and off
@@ -329,6 +329,8 @@ ggplot()+
   labs(colour = "Legend", title = "Schreck-Mode: Off", subtitle = "Wild boar: Sabine")
 # suitable: 2014_06, 2017_03, 2016_04, 2014_04, 2014_05
 
-ggplot()+
-  geom_point(data = Sabine_off, aes(distance, time)
-             
+plot(Sabine_off$Date, Sabine_off$distance)
+
+ggplot ()+
+  geom_point(data = Sabine_off, aes(distance, Date))
+
