@@ -1,5 +1,7 @@
 ## Question: How can the effectiveness of scare-off measure on wild boar be measured? 
 
+######## Methods of approach 1 sind nicht aktuell !!!!! ####
+
 ## Two methods to confront (pros and cons)
     # 1: measure the mean distance between wild boar location and scare-off 
     #    (mean distance between two consecutive location) and build a graph / map 
@@ -21,13 +23,14 @@
     #     - calculate distances 
 
 ## Libraries 
-library(ComputationalMovementAnalysisData)
-library(ggplot2)
-library(dplyr)
-library(sf)
-library(forcats)
-library(tidyverse)
-
+ipak <- function(pkg){
+  new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])] 
+  if (length(new.pkg)) 
+    install.packages(new.pkg, dependencies = TRUE) 
+  sapply(pkg, require, character.only = TRUE)
+}
+packages <- c("ComputationalMovementAnalysisData", "ggplot2", "dplyr", "sf", "forcats", "tidyverse", "lubridate","ggmap", "mapview", "tidyr","terra","tmap")
+ipak(packages)
 
 ## first look to the data-sets
 head(wildschwein_BE)
@@ -95,7 +98,7 @@ wildschwein_convex_hull %>%
   theme(legend.position = "none")
 
 
-## Change coordinates scare-off lacations from gps to CH1903+ / LV95
+## Change coordinates scare-off lacations from WGS84 to CH1903+ / LV95
 ## first transform dataframe into a spatial object
 schreck_locations_swiss_coord <- st_as_sf(schreck_locations, 
                               coords = c("lon", "lat"), 
@@ -108,11 +111,6 @@ wildschwein_BE_spatial <- st_as_sf(wildschwein_BE,
                                           coords = c("E", "N"), 
                                           crs = 2056)
 
-## select first 7 wild board
-target = c("Sabine", "Ruth", "Rosa", "Nicole", "Isabelle","Fritz","Caroline")
-
-w <- wildschwein_BE_spatial %>%
-  filter(TierName %in% target)
 
 ## Plotting the location of the scare-off 
 ggplot(schreck_locations_swiss_coord)+
@@ -192,30 +190,11 @@ schreck2 <- left_join(schrecks,schreck_agenda,by="id")
 ## plotting single trajectories with scare-off-locations
 # in this graphs choose which scare-off are suitable for the anaylsis 
 # (the ones near the location of the wild board location)
-# Ueli
-ggplot()+
-  geom_sf(data = Ueli, aes(color = "Ueli")) +
-  geom_sf(data = schreck2) +
-  # geom_sf_label(data = schreck2, aes(label = id)) +
-  geom_sf_text(data = schreck2, aes(label = id), size=2, check_overlap = TRUE) +
-  coord_sf(datum = 2056) +
-  labs(colour = "Legend", title = "Single trajectories with scare-off-locations", subtitle = "Wild boar: Ueli")
-# suitable: 2016_05, 2017_02, 2017_01, 2016_01, 2014_05, 2014_04, 2016_13
+## check if the telemetry period correspond to the time where scare-off are active or not 
+# There has to be a period before the schreck it is turned on and a period after the schreck it is turned off
+# The following Wild boar are suitable for the analysis!!
 
-# Sabine 
-ggplot()+
-  geom_point(data = Sabine, aes(X, Y, color = "Sabine")) +
-  geom_sf(data = schreck2) +
-  # geom_sf_label(data = schreck2, aes(label = id)) +
-  geom_sf_text(data = schreck2, aes(label = id), size=2, check_overlap = TRUE) +
-  coord_sf(datum = 2056) +
-  # scale_y_continuous(limits=c(1205150,1205250)) +
-  # scale_x_continuous(limits=c(2570900,2571000)) +
-  theme_classic() +
-  labs(colour = "Legend", title = "Wild boar and scare-off-locations", subtitle = "Wild boar: Sabine")
-# suitable: 2014_06, 2017_03, 2016_04, 2014_04, 2014_05
-
-# Caroline 
+# Caroline sieht realitv gut aus mit WSS_2016_01
 ggplot()+
   geom_sf(data = schreck2) +
   geom_sf(data = Caroline, aes(color = "Caroline")) +
@@ -223,56 +202,37 @@ ggplot()+
   geom_sf_text(data = schreck2, aes(label = id), size=2, check_overlap = TRUE) +
   coord_sf(datum = 2056)+
   labs(colour = "Legend", title = "Single trajectories with scare-off-locations", subtitle = "Wild boar: Caroline")
-# suitable: 2017_07, 2016_13, 2014_04, 2014_05, 2016_01, 2017_02, 2017_01
 
-# Isabelle 
+
+# Miriam sieht perfekt aus mit WSS_2016_01
 ggplot()+
   geom_sf(data = schreck2) +
-  geom_sf(data = Isabelle, aes(color = "Isabelle")) +
+  geom_sf(data = Miriam, aes(color = "Miriam")) +
   # geom_sf_label(data = schreck2, aes(label = id)) +
   geom_sf_text(data = schreck2, aes(label = id), size=2, check_overlap = TRUE) +
-  coord_sf(datum = 2056) +
-  labs(colour = "Legend", title = "Wild boar and scare-off-locations", subtitle = "Wild boar: Isabelle")
-# suitable: 2014_05, 2014_04 2016_13
+  coord_sf(datum = 2056)+
+  labs(colour = "Legend", title = "Single trajectories with scare-off-locations", subtitle = "Wild boar: Miriam")
 
-# Rosa 
+
+# Frida sieht perfekt aus mit WSS_2016_01
 ggplot()+
   geom_sf(data = schreck2) +
-  geom_sf(data = Rosa, aes(color = "Rosa")) +
+  geom_sf(data = Frida, aes(color = "Frida")) +
   # geom_sf_label(data = schreck2, aes(label = id)) +
   geom_sf_text(data = schreck2, aes(label = id), size=2, check_overlap = TRUE) +
-  coord_sf(datum = 2056) +
-  labs(colour = "Legend", title = "Single trajectories with scare-off-locations", subtitle = "Wild boar: Rosa")
-# suitable:2017_01, 2017_02, 2016_05, 2014_05, 2014_04
+  coord_sf(datum = 2056)+
+  labs(colour = "Legend", title = "Single trajectories with scare-off-locations", subtitle = "Wild boar: Frida")
 
 
-#All for fun
-ggplot()+
-  geom_sf(data = Ueli, aes(color = "Ueli"), alpha = .5) +
-  geom_sf(data = Sabine, aes(color = "Sabine"), alpha = .5) +
-  geom_sf(data = Caroline, aes(color = "Caroline"), alpha = .5) +
-  geom_sf(data = Isabelle, aes(color = "Isabelle"), alpha = .5) +
-  geom_sf(data = Rosa, aes(color = "Rosa"), alpha = .5) +
-  geom_sf(data = schreck2) +
-  # geom_sf_label(data = schreck2, aes(label = id)) +
-  geom_sf_text(data = schreck2, aes(label = id), size=2, check_overlap = TRUE) +
-  coord_sf(datum = 2056) +
-  labs(colour = "Legend", title = "Some wild-boar-trajectories with scare-off-locations")
+#### CAROLINE 2016_01 (Approach 2)####
 
-
-
-## check if the telemetry period correspond to the time where scare-off are active or not 
-# I don't know if there is a method or if we have to do this manually...
-# ...
-# Choose definitive 3 wild boar to do the analysis --> Sabine
-
-## first try with Sabine 2014_04 (Approach 2):
 # new column Date
-# new column schreck on or off
+# new column schreck off before / on / off after
 # new column with coordinates
-# new coloumn with distance between wild boar locations and schreck 2014_04
-Sabine <- Sabine %>%
+# new coloumn with distance between wild boar locations and schreck 2016_01
+Caroline <- Caroline %>%
   mutate(Date = as.Date(DatetimeUTC),
+<<<<<<< HEAD
          Schreck = ifelse(Date >= as.Date("2014-05-01") & Date <= as.Date("2014-10-28"), "on", "off"),
          X = unlist(map(Sabine$geometry,1)),
          Y = unlist(map(Sabine$geometry,2)),
@@ -280,12 +240,25 @@ Sabine <- Sabine %>%
 
 # Breit --> Longformat
 ggplot(Sabine, aes(Schreck, distance)) +
+=======
+         Schreck = case_when(Date < as.Date("2016-04-04") ~ "off before",
+                                 Date >= as.Date("2016-04-04") & Date <= as.Date("2016-04-23") ~ "on",
+                                 Date > as.Date("2016-04-23") ~ "off after"),
+         X = unlist(map(Caroline$geometry,1)),
+         Y = unlist(map(Caroline$geometry,2)),
+         distance = sqrt((X-2570935)^2+(Y-1205197)^2)) %>%
+  filter(Date > as.Date("2016-02-29")& Date < as.Date("2016-07-01"))
+
+# Boxplot Caroline
+ggplot(Caroline, aes(Schreck, distance)) +
+>>>>>>> dc30c1a8199290975266711805a81baf26ee4535
   geom_boxplot() +
   theme_classic() +
   labs(title = "Mean distance between wild boar and schreck-locations", subtitle = "Sabine")+
   xlab("Mode schreck") + ylab("Distance")
 
-# T-Test
+# T-Test MUSS NOCHMALS GEMACHT WERDEN MIT VOR (OFF) / WÄHREND (ON) / NACH (OFF)
+
 # Mean distance when scare-off measures are turned on is smaller than when it's turned off
 # H0: Distance Sabine_on is smaller than Sabine_off
 # H1: Distance Sabine_on is greater than Sabine_off
@@ -299,6 +272,7 @@ Sabine_off <- Sabine %>%
 t.test(Sabine_on$distance, Sabine_off$distance, var.equal = TRUE, alternative = c("greater"))
 
 
+<<<<<<< HEAD
 par(mfrow=c(1,1))
 
 
@@ -334,3 +308,232 @@ plot(Sabine_off$Date, Sabine_off$distance)
 ggplot ()+
   geom_point(data = Sabine_off, aes(distance, Date))
 
+=======
+### MIRIAM 2016_01 (Approach 2) ####
+Miriam <- Miriam %>%
+  mutate(Date = as.Date(DatetimeUTC),
+         Schreck = case_when(Date < as.Date("2016-04-04") ~ "off before",
+                             Date >= as.Date("2016-04-04") & Date <= as.Date("2016-04-23") ~ "on",
+                             Date > as.Date("2016-04-23") ~ "off after"),
+         X = unlist(map(Miriam$geometry,1)),
+         Y = unlist(map(Miriam$geometry,2)),
+         distance = sqrt((X-2570935)^2+(Y-1205197)^2)) 
+         
+# Boxplot Miriam
+ggplot(Miriam, aes(Schreck, distance)) +
+  geom_boxplot() +
+  theme_classic() +
+  labs(title = "Mean distance between wild boar and scare-off", subtitle = "Miriam")+
+  xlab("Mode scare-off") + ylab("Distance")
+
+
+### FRIDA 2016_01 (Approach 2) ####
+Frida <- Frida %>%
+  mutate(Date = as.Date(DatetimeUTC),
+         Schreck = case_when(Date < as.Date("2016-04-04") ~ "off before",
+                             Date >= as.Date("2016-04-04") & Date <= as.Date("2016-04-23") ~ "on",
+                             Date > as.Date("2016-04-23") ~ "off after"),
+         X = unlist(map(Frida$geometry,1)),
+         Y = unlist(map(Frida$geometry,2)),
+         distance = sqrt((X-2570935)^2+(Y-1205197)^2)) 
+
+# Boxplot Frida
+ggplot(Frida, aes(Schreck, distance)) +
+  geom_boxplot() +
+  theme_classic() +
+  labs(title = "Mean distance between wild boar and scare-off", subtitle = "Frida")+
+  xlab("Mode scare-off") + ylab("Distance")
+
+
+#### APPROACH 1 ####
+# Download crop data 
+crop_fanel <- read_sf("Feldaufnahmen_Fanel.gpkg")
+
+head(crop_fanel)
+
+summary(crop_fanel)
+
+unique(crop_fanel$Frucht)
+
+st_crs(crop_fanel)
+
+# Visualization
+WSS_2016_01 <- schreck2 %>%
+  filter(id == "WSS_2016_01")
+ggplot(crop_fanel) +
+  geom_sf(aes(fill = Frucht)) +
+  geom_sf(data = WSS_2016_01) +
+  geom_sf_text(data = WSS_2016_01, aes(label = id), size=3, color= "white", check_overlap = TRUE)+
+  geom_sf_text(data = crop_fanel, aes(label = FieldID), size =1.2)
+# Our schreck WSS_2016_01 is located in "Wiese number 2"
+
+
+# Overlay the  dataset of the 3 selected wildboar with the fanel data to verify the spatial overlap.
+# Caroline 
+
+Caroline <-  st_join(Caroline, crop_fanel)
+Caroline
+
+ggplot(crop_fanel) +
+  geom_sf(aes(fill = Frucht)) +
+  geom_sf(data = Caroline) +
+  geom_sf(data = WSS_2016_01) +
+  geom_sf_text(data = WSS_2016_01, aes(label = id), size=3, color= "white", check_overlap = TRUE)
+
+# Miriam
+Miriam <-  st_join(Miriam, crop_fanel)
+Miriam
+
+ggplot(crop_fanel) +
+  geom_sf(aes(fill = Frucht)) +
+  geom_sf(data = Miriam) +
+  geom_sf(data = WSS_2016_01) +
+  geom_sf_text(data = WSS_2016_01, aes(label = id), size=3, color= "white", check_overlap = TRUE)
+
+# Frida
+Frida <-  st_join(Frida, crop_fanel)
+Frida
+
+ggplot(crop_fanel) +
+  geom_sf(aes(fill = Frucht)) +
+  geom_sf(data = Frida) +
+  geom_sf(data = WSS_2016_01) +
+  geom_sf_text(data = WSS_2016_01, aes(label = id), size=3, color= "white", check_overlap = TRUE)
+
+
+# Visual exploration for Caroline (only most relevant "Frucht" displayed!!!)
+Caroline_2 <- Caroline %>%
+  st_set_geometry(NULL) %>%
+  mutate(
+    hour = hour(round_date(DatetimeUTC,"hour")),
+    Frucht = ifelse(is.na(Frucht),"other",Frucht),
+    Frucht = fct_lump(Frucht, 5,other_level = "other"),
+  ) %>%
+  group_by(Schreck,hour,Frucht) %>%
+  count() %>%
+  ungroup() %>%
+  group_by(Schreck,hour) %>%
+  mutate(perc = n / sum(n)) %>%
+  ungroup() %>%
+  mutate(
+    Frucht = fct_reorder(Frucht, n,sum, desc = TRUE)
+  )
+
+
+ggplot(Caroline_2, aes(hour,perc, fill = Frucht)) +
+  geom_col(width = 1) +
+  scale_y_continuous(name = "Percentage", labels = scales::percent_format()) +
+  scale_x_continuous(name = "Time (rounded to the nearest hour)") +
+  facet_wrap(~Schreck ) +
+  theme_classic() +
+  labs(title = "Percentages of samples in a given crop per hour",subtitle = "Only showing the most common categories")
+
+
+# Visual exploration for Frida 
+Frida_2 <- Frida %>%
+  st_set_geometry(NULL) %>%
+  mutate(
+    hour = hour(round_date(DatetimeUTC,"hour")),
+    Frucht = ifelse(is.na(Frucht),"other",Frucht),
+    Frucht = fct_lump(Frucht, 5,other_level = "other"),
+  ) %>%
+  group_by(Schreck,hour,Frucht) %>%
+  count() %>%
+  ungroup() %>%
+  group_by(Schreck,hour) %>%
+  mutate(perc = n / sum(n)) %>%
+  ungroup() %>%
+  mutate(
+    Frucht = fct_reorder(Frucht, n,sum, desc = TRUE)
+  )
+
+
+ggplot(Frida_2, aes(hour,perc, fill = Frucht)) +
+  geom_col(width = 1) +
+  scale_y_continuous(name = "Percentage", labels = scales::percent_format()) +
+  scale_x_continuous(name = "Time (rounded to the nearest hour)") +
+  facet_wrap(~Schreck ) +
+  theme_classic() +
+  labs(title = "Percentages of samples in a given crop per hour",subtitle = "Only showing the most common categories")
+
+
+# Visual exploration for Miriam 
+Miriam_2 <- Miriam %>%
+  st_set_geometry(NULL) %>%
+  mutate(
+    hour = hour(round_date(DatetimeUTC,"hour")),
+    Frucht = ifelse(is.na(Frucht),"other",Frucht),
+    Frucht = fct_lump(Frucht, 5,other_level = "other"),
+  ) %>%
+  group_by(Schreck,hour,Frucht) %>%
+  count() %>%
+  ungroup() %>%
+  group_by(Schreck,hour) %>%
+  mutate(perc = n / sum(n)) %>%
+  ungroup() %>%
+  mutate(
+    Frucht = fct_reorder(Frucht, n,sum, desc = TRUE)
+  )
+
+
+ggplot(Miriam_2, aes(hour,perc, fill = Frucht)) +
+  geom_col(width = 1) +
+  scale_y_continuous(name = "Percentage", labels = scales::percent_format()) +
+  scale_x_continuous(name = "Time (rounded to the nearest hour)") +
+  facet_wrap(~Schreck ) +
+  theme_classic() +
+  labs(title = "Percentages of samples in a given crop per hour",subtitle = "Only showing the most common categories")
+
+### Calculation approach 1 ####
+## WSS_2016_01 was on for 19 days consecutive. So that a comparison has sense,
+## we filter the period from 19 days before the schreck was turned on and 19 days after!
+
+# Caroline 
+Caroline_approach1 <- Caroline %>%
+  st_set_geometry(NULL) %>%
+  filter(Date > as.Date("2016-03-16")) %>%
+  filter(Date < as.Date("2016-05-12")) %>%
+  group_by(Schreck, FieldID) %>%
+  summarise(total = sum(FieldID)) %>%
+  filter(FieldID == 2)
+## Beim Caroline gibt es nicht Data während und nacher.... wir verwenden nur Miriam und Frida
+
+# Miriam
+Miriam_approach1 <- Miriam %>%
+  st_set_geometry(NULL) %>%
+  filter(Date > as.Date("2016-03-16")) %>%
+  filter(Date < as.Date("2016-05-12")) %>%
+  group_by(Schreck, FieldID) %>%
+  summarise(total = sum(FieldID)) %>%
+  filter(FieldID == 2)
+
+# Frida
+Frida_approach1 <- Frida %>%
+  st_set_geometry(NULL) %>%
+  filter(Date > as.Date("2016-03-16")) %>%
+  filter(Date < as.Date("2016-05-12")) %>%
+  group_by(Schreck, FieldID) %>%
+  summarise(total = sum(FieldID)) %>%
+  filter(FieldID == 2)
+
+## Statistische Test? oder nur vergleich der Anzahl Punkte?
+
+
+###  Visualization of the "Streifgebiet"
+# Calculate Convex Hull for the 3 selected wild boars
+wildschwein_BE_spatial_smry <- wildschwein_BE_spatial %>%
+  filter(TierName %in% c("Caroline", "Miriam", "Frida")) %>%
+  group_by(TierName) %>%
+  summarise()
+
+mcp <- st_convex_hull(wildschwein_BE_spatial_smry) 
+
+# Import raster data
+pk100_BE <- terra::rast("pk100_BE (2).tif")
+
+# Plot interactive map
+tmap_mode("view")
+tm_shape(mcp) +
+  tm_polygons(col = "TierName",alpha = 0.4,border.col = "red") +
+  tm_legend(bg.color = "white") 
+>>>>>>> dc30c1a8199290975266711805a81baf26ee4535
