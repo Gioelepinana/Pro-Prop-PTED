@@ -28,15 +28,16 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE, results=FALSE}
 
-## Libraries 
-library(ComputationalMovementAnalysisData)
-library(ggplot2)
-library(dplyr)
-library(sf)
-library(forcats)
-library(tidyverse)
+ipak <- function(pkg){
+  new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])] 
+  if (length(new.pkg)) 
+    install.packages(new.pkg, dependencies = TRUE) 
+  sapply(pkg, require, character.only = TRUE)
+}
 
-head(wildschwein_BE)
+packages <- c("ComputationalMovementAnalysisData", "ggplot2", "dplyr", "sf", "forcats", "tidyverse", "lubridate","ggmap", "mapview", "tidyr","terra","tmap")
+
+ipak(packages)
 
 ```
 
@@ -44,7 +45,7 @@ head(wildschwein_BE)
 <!-- the following is just a placeholder for the title-picture, remove it afterwards!-->
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
 
-
+# Picture
 
 ```
 
@@ -64,10 +65,10 @@ Within this semester project, two methods are analyzed in order to determine the
 
 ### Methods
 
-A. *(A) Method*
+**(A) Method**
 The first approach analyzes the presence of wild boars by selected agricultural fields. Thereby, it is examined which wild boars were observed in the selected field before the activation of the scare and if and how often they were observed in the same field after the activation. Based on this analysis, a conclusion can be made by statistical analysis (P-value). 
 
-B. *(B) Method*
+**(B) Method**
 The second approach compares the mean distance between wild boar and schreck-locations, when turned on and when turned off. Therefore we measure a statistical effectiveness using p-value: 
 *define relevant schreck-locations : the ones near the wild boar 
 *choose 3 wild board to do the analysis
@@ -77,7 +78,7 @@ The second approach compares the mean distance between wild boar and schreck-loc
 
 ### Datasets
 #### Dataset wildschweine_BE 
-The Zurich University of Applied Sciences provided us with two datasets for our research. The dataset "wildschwein_BE" contains the coordinates of 98 wild boars in Fenel in region of Bern, Switzerland over the period from May 2014 to October 2016.
+The Zurich University of Applied Sciences provided us with tree required datasets for our research. The dataset "wildschwein_BE" contains the coordinates of 98 wild boars in Fenel in region of Bern, Switzerland over the period from May 2014 to October 2016. As can be seen from the following table, the coordinates of the wild boars were collected every 15 minutes.
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
 
 # Include tables with the function "kable"
@@ -85,24 +86,33 @@ knitr::kable(head(wildschwein_BE))
 
 ```
 
-```{r, echo = FALSE, warning=FALSE, message=FALSE, results=FALSE}
 
-
-
-```
-
-#### Dataset schreck_locations
-The second dataset "schreck_location" contains the coordinates of the scare positions and time intervals when the scare was turned on and off. To investigate the question of their effectiveness, two different methods are analyzed and at the end critically discussed on their advantages and disadvantages. 
+#### Dataset schreck_locations and schreck_agenda
+The second "schreck_locations" and third "schreck_agenda" datasets contain the coordinates of the schreck-positions and time intervals when the scare was turned on and off. In a futher step, the two data sets were joined into one data set using a left join.
+<br><br>
+schreck_locations
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
-knitr::kable(head(schreck_agenda))
+
 knitr::kable(head(schreck_locations))
+
 ```
 
+schreck_agenda
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+
+knitr::kable(head(schreck_agenda))
+
+```
 
 ### Pre-processing
 #### Dataset wildschweine_BE 
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin pharetra nonummy pede. Mauris et orci.
+
 Sample regime
+<br><br>
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
+
+# Sample regime
 limits <- c(0,200)
 breaks = seq(0,200,50)
 labels = paste(c(rep("",length(breaks)-1),">"), breaks)
@@ -119,10 +129,14 @@ wildschwein_BE %>%
   theme_minimal() +
   theme(legend.position = "top") +
   guides(color = guide_colorbar(title.position = "top", title.hjust = .5, barwidth = unit(20, "lines"), barheight = unit(.5, "lines")))
+
 ```
 
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin pharetra nonummy pede. Mauris et orci.
+
 Temporal Overlap
-```{r, echo = FALSE, warning=FALSE, message=FALSE}
+<br><br>
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
 sampling_periods <- wildschwein_BE %>%
   group_by(TierID, TierName, CollarID) %>%
   summarise(
@@ -143,8 +157,11 @@ wildschwein_overlap_temp %>%
 
 ```
 
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin pharetra nonummy pede. Mauris et orci.
+
 Spatial Overlap
-```{r, echo = FALSE, warning=FALSE, message=FALSE}
+<br><br>
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
 wildschwein_sf <- wildschwein_BE %>%
   st_as_sf(coords = c("E", "N"), crs = 2056) %>%
   mutate(tiercollar = paste(TierID, TierName, CollarID)) 
@@ -169,42 +186,24 @@ Change coordinates scare-off lacations from gps to CH1903+ / LV95
 first transform dataframe into a spatial object
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
 
+## first transform dataframe into a spatial object
 schreck_locations_swiss_coord <- st_as_sf(schreck_locations, 
                               coords = c("lon", "lat"), 
                               crs = 4326)
-
-```
-
-Now coordinate transformation
-```{r, echo = FALSE, warning=FALSE, message=FALSE}
-
+## Now coordinate transformation
 schreck_locations_swiss_coord <- st_transform(schreck_locations_swiss_coord, 2056)
 
-```
-
-Transform Wildschwein_BE as weel into a spatial object 
-```{r, echo = FALSE, warning=FALSE, message=FALSE}
-
+## Transform Wildschwein_BE as weel into a spatial object 
 wildschwein_BE_spatial <- st_as_sf(wildschwein_BE, 
                                           coords = c("E", "N"), 
                                           crs = 2056)
 
 ```
 
-select first 7 wild board
-```{r, echo = FALSE, warning=FALSE, message=FALSE}
-
-target = c("Sabine", "Ruth", "Rosa", "Nicole", "Isabelle","Fritz","Caroline")
-
-w <- wildschwein_BE_spatial %>%
-  filter(TierName %in% target)
-
-
-```
-
 #### Dataset schreck_locations
+
 Plotting the location of the scare-off
-```{r, echo = FALSE, warning=FALSE, message=FALSE}
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
 
 ggplot(schreck_locations_swiss_coord)+
   geom_sf() +
@@ -213,9 +212,9 @@ ggplot(schreck_locations_swiss_coord)+
 ```
 
 
-#### Combine the two datasets
+Combine the two datasets
 Plotting wild board together with locations scare-off  
-```{r, echo = FALSE, warning=FALSE, message=FALSE}
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
 
 ggplot()+
   geom_sf(data = schreck_locations_swiss_coord) +
@@ -246,6 +245,7 @@ target2 = c("WSS_2016_05", "WSS_2016_01", "WSS_2016_13", "WSS_2016_06", "WSS_201
 schrecks <- schreck_locations_swiss_coord %>%
   filter(id %in% target2)
 
+
 ```
 
 plot the important scare-off
@@ -257,7 +257,7 @@ ggplot(schrecks)+
 
 ```
 
-create dataframe with single wild board 
+create dataframe with 19 single wild board 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
 Ueli <- wildschwein_BE_spatial %>%
   filter(TierName == "Ueli")

@@ -232,7 +232,6 @@ ggplot()+
 # new coloumn with distance between wild boar locations and schreck 2016_01
 Caroline <- Caroline %>%
   mutate(Date = as.Date(DatetimeUTC),
-<<<<<<< HEAD
          Schreck = ifelse(Date >= as.Date("2014-05-01") & Date <= as.Date("2014-10-28"), "on", "off"),
          X = unlist(map(Sabine$geometry,1)),
          Y = unlist(map(Sabine$geometry,2)),
@@ -240,18 +239,16 @@ Caroline <- Caroline %>%
 
 # Breit --> Longformat
 ggplot(Sabine, aes(Schreck, distance)) +
-=======
          Schreck = case_when(Date < as.Date("2016-04-04") ~ "off before",
                                  Date >= as.Date("2016-04-04") & Date <= as.Date("2016-04-23") ~ "on",
-                                 Date > as.Date("2016-04-23") ~ "off after"),
-         X = unlist(map(Caroline$geometry,1)),
-         Y = unlist(map(Caroline$geometry,2)),
-         distance = sqrt((X-2570935)^2+(Y-1205197)^2)) %>%
+                                 Date > as.Date("2016-04-23") ~ "off after") + 
+         X = unlist(map(Caroline$geometry,1)) +
+         Y = unlist(map(Caroline$geometry,2)) +
+         distance = sqrt((X-2570935)^2+(Y-1205197)^2) %>%
   filter(Date > as.Date("2016-02-29")& Date < as.Date("2016-07-01"))
 
 # Boxplot Caroline
 ggplot(Caroline, aes(Schreck, distance)) +
->>>>>>> dc30c1a8199290975266711805a81baf26ee4535
   geom_boxplot() +
   theme_classic() +
   labs(title = "Mean distance between wild boar and schreck-locations", subtitle = "Sabine")+
@@ -272,7 +269,6 @@ Sabine_off <- Sabine %>%
 t.test(Sabine_on$distance, Sabine_off$distance, var.equal = TRUE, alternative = c("greater"))
 
 
-<<<<<<< HEAD
 par(mfrow=c(1,1))
 
 
@@ -308,7 +304,7 @@ plot(Sabine_off$Date, Sabine_off$distance)
 ggplot ()+
   geom_point(data = Sabine_off, aes(distance, Date))
 
-=======
+
 ### MIRIAM 2016_01 (Approach 2) ####
 Miriam <- Miriam %>%
   mutate(Date = as.Date(DatetimeUTC),
@@ -536,4 +532,4 @@ tmap_mode("view")
 tm_shape(mcp) +
   tm_polygons(col = "TierName",alpha = 0.4,border.col = "red") +
   tm_legend(bg.color = "white") 
->>>>>>> dc30c1a8199290975266711805a81baf26ee4535
+
