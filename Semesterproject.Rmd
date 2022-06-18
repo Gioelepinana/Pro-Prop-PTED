@@ -201,31 +201,33 @@ wildschwein_BE_spatial <- st_as_sf(wildschwein_BE,
 ```
 
 #### Dataset schreck_locations
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin pharetra nonummy pede. Mauris et orci.
 
-Plotting the location of the scare-off
 ```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
+schreck_locations_swiss_coord <- st_as_sf(schreck_locations, 
+                              coords = c("lon", "lat"), 
+                              crs = 4326)
+## Now coordinate transformation
+schreck_locations_swiss_coord <- st_transform(schreck_locations_swiss_coord, 2056)
 
+## Transform Wildschwein_BE as weel into a spatial object 
+wildschwein_BE_spatial <- st_as_sf(wildschwein_BE, 
+                                          coords = c("E", "N"), 
+                                          crs = 2056)
+
+
+## Plotting the location of the scare-off 
 ggplot(schreck_locations_swiss_coord)+
   geom_sf() +
   coord_sf(datum = 2056) 
 
-```
-
-
-Combine the two datasets
-Plotting wild board together with locations scare-off  
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
-
+## Plotting wild board together with locations scare-off  
 ggplot()+
   geom_sf(data = schreck_locations_swiss_coord) +
   geom_sf(data = wildschwein_BE_spatial, aes(color = "red")) +
   coord_sf(datum = 2056)
 
-```
-
-Plotting the location of the scare-off with the corresponding ID, to select the important ones
-```{r, echo = FALSE, warning=FALSE, message=FALSE}
-
+## Plotting the location of the scare-off with the corresponding ID, to select the important ones
 ggplot(schreck_locations_swiss_coord, label = "id")+
   geom_sf() +
   coord_sf(datum = 2056)+
@@ -233,32 +235,19 @@ ggplot(schreck_locations_swiss_coord, label = "id")+
   scale_y_continuous(limits=c(1206500,1207000)) +
   scale_x_continuous(limits=c(2570000,2571000))
 
-
-```
-
-select important scare-off 
-the following scare-off location are the ones near the wild boards studied and therefore 
-they could be suitable for the analysis. 
-```{r, echo = FALSE, warning=FALSE, message=FALSE}
-
+## select important scare-off 
+# the following scare-off location are the ones near the wild boards studied and therefore 
+# they could be suitable for the analysis. 
 target2 = c("WSS_2016_05", "WSS_2016_01", "WSS_2016_13", "WSS_2016_06", "WSS_2015_01","WSS_2015_03","WSS_2015_04","WSS_2014_04","WSS_2014_05","WSS_2014_06","WSS_2017_02","WSS_2017_01","WSS_2017_09","WSS_2017_07","WSS_2017_03","WSS_2017_04")
 schrecks <- schreck_locations_swiss_coord %>%
   filter(id %in% target2)
 
-
-```
-
-plot the important scare-off
-```{r, echo = FALSE, warning=FALSE, message=FALSE}
-
+## plot the important scare-off
 ggplot(schrecks)+
   geom_sf() +
   coord_sf(datum = 2056)
 
-```
-
-create dataframe with 19 single wild board 
-```{r, echo = FALSE, warning=FALSE, message=FALSE}
+## create dataframe with single wild board 
 Ueli <- wildschwein_BE_spatial %>%
   filter(TierName == "Ueli")
 Sabine <- wildschwein_BE_spatial %>%
@@ -298,43 +287,86 @@ Donar <- wildschwein_BE_spatial %>%
 Joanna <- wildschwein_BE_spatial %>%
   filter(TierName == "Joanna")
 
-```
 
-Join two scare-off dataframes
-```{r, echo = FALSE, warning=FALSE, message=FALSE}
-
+## Join two scare-off dataframes
 schreck2 <- left_join(schrecks,schreck_agenda,by="id")
+```
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+## plotting single trajectories with scare-off-locations
+# in this graphs choose which scare-off are suitable for the anaylsis 
+# (the ones near the location of the wild board location)
+## check if the telemetry period correspond to the time where scare-off are active or not 
+# There has to be a period before the schreck it is turned on and a period after the schreck it is turned off
+# The following Wild boar are suitable for the analysis!!
+
+# Caroline sieht realitv gut aus mit WSS_2016_01
+ggplot()+
+  geom_sf(data = schreck2) +
+  geom_sf(data = Caroline, aes(color = "Caroline")) +
+  # geom_sf_label(data = schreck2, aes(label = id)) +
+  geom_sf_text(data = schreck2, aes(label = id), size=2, check_overlap = TRUE) +
+  coord_sf(datum = 2056)+
+  labs(colour = "Legend", title = "Single trajectories with scare-off-locations", subtitle = "Wild boar: Caroline")
+
+
+# Miriam sieht perfekt aus mit WSS_2016_01
+ggplot()+
+  geom_sf(data = schreck2) +
+  geom_sf(data = Miriam, aes(color = "Miriam")) +
+  # geom_sf_label(data = schreck2, aes(label = id)) +
+  geom_sf_text(data = schreck2, aes(label = id), size=2, check_overlap = TRUE) +
+  coord_sf(datum = 2056)+
+  labs(colour = "Legend", title = "Single trajectories with scare-off-locations", subtitle = "Wild boar: Miriam")
+
+
+# Frida sieht perfekt aus mit WSS_2016_01
+ggplot()+
+  geom_sf(data = schreck2) +
+  geom_sf(data = Frida, aes(color = "Frida")) +
+  # geom_sf_label(data = schreck2, aes(label = id)) +
+  geom_sf_text(data = schreck2, aes(label = id), size=2, check_overlap = TRUE) +
+  coord_sf(datum = 2056)+
+  labs(colour = "Legend", title = "Single trajectories with scare-off-locations", subtitle = "Wild boar: Frida")
 
 ```
 
+
+### Method 1
+
+Für die erste Methode wurde zusätzlich das Datenpaket "Feldaufnahmen_Fanel" verwendet, welches die Bodenbedeckung des Naturschutzgebietes unterteilt. Anhand der Abbildung X kann entnommen werden, dass der für die Analyse geeigneter Schreck sich auf der Wiesenfläche Nr.2 befindet. Wiesenflächen eigen sich gut für eine Untersuchungsfläche, da Wildschweine während der Nahrungssuche mit ihren klauen den Boden verunstalten. 
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
+
+#### APPROACH 1 ####
+# Download crop data 
+crop_fanel <- read_sf("Feldaufnahmen_Fanel.gpkg")
+
+head(crop_fanel)
+
+summary(crop_fanel)
+
+unique(crop_fanel$Frucht)
+
+st_crs(crop_fanel)
+
+```
+
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+# Visualization
+WSS_2016_01 <- schreck2 %>%
+  filter(id == "WSS_2016_01")
+ggplot(crop_fanel) +
+  geom_sf(aes(fill = Frucht)) +
+  geom_sf(data = WSS_2016_01) +
+  geom_sf_text(data = WSS_2016_01, aes(label = id), size=3, color= "white", check_overlap = TRUE)+
+  geom_sf_text(data = crop_fanel, aes(label = FieldID), size =1.2) +
+  labs(title = "Diffrent crop-types in Fenel", subtitle = "Schreck-Location WSS_2016_01")
+# Our schreck WSS_2016_01 is located in "Wiese number 2"
+```
 
 
 ### Method 2
-plotting single trajectories with scare-off-locations
-in this graphs choose which scare-off are suitable for the anaylsis 
-(the ones near the location of the wild board location)
-
-#### Ueli
-
-```{r, echo = FALSE, warning=FALSE, message=FALSE}
-
-ggplot()+
-  geom_sf(data = Ueli, aes(color = "Ueli")) +
-  geom_sf(data = schreck2) +
-  geom_sf_label(data = schreck2, aes(label = id)) +
-  geom_sf_text(data = schreck2, aes(label = id), size=2, check_overlap = TRUE) +
-  coord_sf(datum = 2056) +
-  labs(colour = "Legend", title = "Single trajectories with scare-off-locations", subtitle = "Wild boar: Ueli")
-
-```
-<!-- the following is just a placeholder for the title-picture, remove it afterwards!-->
-<!-- the following is just a placeholder for the title-picture, remove it afterwards!-->
-suitable: 2016_05, 2017_02, 2017_01, 2016_01, 2014_05, 2014_04, 2016_13
-
-
-
-
-
 
 ###  Problems and limitations
 

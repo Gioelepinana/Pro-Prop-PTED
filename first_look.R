@@ -119,9 +119,12 @@ ggplot(schreck_locations_swiss_coord)+
 
 ## Plotting wild board together with locations scare-off  
 ggplot()+
-  geom_sf(data = schreck_locations_swiss_coord) +
-  geom_sf(data = wildschwein_BE_spatial, aes(color = "red")) +
-  coord_sf(datum = 2056)
+  geom_sf(data = schreck_locations_swiss_coord, aes(color = "schreck")) +
+  geom_sf(data = wildschwein_BE_spatial, aes(color = "wild boar")) +
+  coord_sf(datum = 2056) +
+  labs(color = "Data") +
+  theme(legend.title = element_text(size=10, face="bold"))+
+  labs(title = "Plot: Wild board and schreck locations in Fenel")
 
 ## Plotting the location of the scare-off with the corresponding ID, to select the important ones
 ggplot(schreck_locations_swiss_coord, label = "id")+
@@ -130,6 +133,10 @@ ggplot(schreck_locations_swiss_coord, label = "id")+
   geom_sf_text(aes(label = id, check_overlap = TRUE)) +
   scale_y_continuous(limits=c(1206500,1207000)) +
   scale_x_continuous(limits=c(2570000,2571000))
+
+# Buffer (does not work; resp. take too long to run)
+# my_buffer <- st_buffer(wildschwein_BE_spatial, dist = 1000)
+# points_inside_buffer <- filter(schreck_locations_swiss_coord, schreck_locations_swiss_coord %in% my_buffer)
 
 ## select important scare-off 
 # the following scare-off location are the ones near the wild boards studied and therefore 
@@ -224,143 +231,31 @@ ggplot()+
   labs(colour = "Legend", title = "Single trajectories with scare-off-locations", subtitle = "Wild boar: Frida")
 
 
-#### CAROLINE 2016_01 (Approach 2)####
-
-# new column Date
-# new column schreck off before / on / off after
-# new column with coordinates
-# new coloumn with distance between wild boar locations and schreck 2016_01
-Caroline <- Caroline %>%
-  mutate(Date = as.Date(DatetimeUTC),
-         Schreck = ifelse(Date >= as.Date("2014-05-01") & Date <= as.Date("2014-10-28"), "on", "off"),
-         X = unlist(map(Sabine$geometry,1)),
-         Y = unlist(map(Sabine$geometry,2)),
-         distance = sqrt((X-2570935)^2+(Y-1205197)^2))
-
-# Breit --> Longformat
-ggplot(Sabine, aes(Schreck, distance)) +
-         Schreck = case_when(Date < as.Date("2016-04-04") ~ "off before",
-                                 Date >= as.Date("2016-04-04") & Date <= as.Date("2016-04-23") ~ "on",
-                                 Date > as.Date("2016-04-23") ~ "off after") + 
-         X = unlist(map(Caroline$geometry,1)) +
-         Y = unlist(map(Caroline$geometry,2)) +
-         distance = sqrt((X-2570935)^2+(Y-1205197)^2) %>%
-  filter(Date > as.Date("2016-02-29")& Date < as.Date("2016-07-01"))
-
-# Boxplot Caroline
-ggplot(Caroline, aes(Schreck, distance)) +
-  geom_boxplot() +
-  theme_classic() +
-  labs(title = "Mean distance between wild boar and schreck-locations", subtitle = "Sabine")+
-  xlab("Mode schreck") + ylab("Distance")
-
-# T-Test MUSS NOCHMALS GEMACHT WERDEN MIT VOR (OFF) / WÄHREND (ON) / NACH (OFF)
-
-# Mean distance when scare-off measures are turned on is smaller than when it's turned off
-# H0: Distance Sabine_on is smaller than Sabine_off
-# H1: Distance Sabine_on is greater than Sabine_off
-
-Sabine_on <- Sabine %>%
-  filter(Schreck == "on")
-  
-Sabine_off <- Sabine %>%
-  filter(Schreck == "off")
-
-t.test(Sabine_on$distance, Sabine_off$distance, var.equal = TRUE, alternative = c("greater"))
 
 
-par(mfrow=c(1,1))
-
-
-#Compare Mode on and off
-# On
-ggplot()+
-  geom_point(data = Sabine_on, aes(X, Y, color = "Sabine")) +
-  geom_sf(data = schreck2) +
-  # geom_sf_label(data = schreck2, aes(label = id)) +
-  geom_sf_text(data = schreck2, aes(label = id), size=2, check_overlap = TRUE) +
-  coord_sf(datum = 2056) +
-  # scale_y_continuous(limits=c(1205150,1205250)) +
-  # scale_x_continuous(limits=c(2570900,2571000)) +
-  theme_classic() +
-  labs(colour = "Legend", title = "Schreck-Mode: On", subtitle = "Wild boar: Sabine")
-# suitable: 2014_06, 2017_03, 2016_04, 2014_04, 2014_05
-
-#Off
-ggplot()+
-  geom_point(data = Sabine_off, aes(X, Y, color = "Sabine")) +
-  geom_sf(data = schreck2) +
-  # geom_sf_label(data = schreck2, aes(label = id)) +
-  geom_sf_text(data = schreck2, aes(label = id), size=2, check_overlap = TRUE) +
-  coord_sf(datum = 2056) +
-  # scale_y_continuous(limits=c(1205150,1205250)) +
-  # scale_x_continuous(limits=c(2570900,2571000)) +
-  theme_classic() +
-  labs(colour = "Legend", title = "Schreck-Mode: Off", subtitle = "Wild boar: Sabine")
-# suitable: 2014_06, 2017_03, 2016_04, 2014_04, 2014_05
-
-plot(Sabine_off$Date, Sabine_off$distance)
-
-ggplot ()+
-  geom_point(data = Sabine_off, aes(distance, Date))
-
-
-### MIRIAM 2016_01 (Approach 2) ####
-Miriam <- Miriam %>%
-  mutate(Date = as.Date(DatetimeUTC),
-         Schreck = case_when(Date < as.Date("2016-04-04") ~ "off before",
-                             Date >= as.Date("2016-04-04") & Date <= as.Date("2016-04-23") ~ "on",
-                             Date > as.Date("2016-04-23") ~ "off after"),
-         X = unlist(map(Miriam$geometry,1)),
-         Y = unlist(map(Miriam$geometry,2)),
-         distance = sqrt((X-2570935)^2+(Y-1205197)^2)) 
-         
-# Boxplot Miriam
-ggplot(Miriam, aes(Schreck, distance)) +
-  geom_boxplot() +
-  theme_classic() +
-  labs(title = "Mean distance between wild boar and scare-off", subtitle = "Miriam")+
-  xlab("Mode scare-off") + ylab("Distance")
-
-
-### FRIDA 2016_01 (Approach 2) ####
-Frida <- Frida %>%
-  mutate(Date = as.Date(DatetimeUTC),
-         Schreck = case_when(Date < as.Date("2016-04-04") ~ "off before",
-                             Date >= as.Date("2016-04-04") & Date <= as.Date("2016-04-23") ~ "on",
-                             Date > as.Date("2016-04-23") ~ "off after"),
-         X = unlist(map(Frida$geometry,1)),
-         Y = unlist(map(Frida$geometry,2)),
-         distance = sqrt((X-2570935)^2+(Y-1205197)^2)) 
-
-# Boxplot Frida
-ggplot(Frida, aes(Schreck, distance)) +
-  geom_boxplot() +
-  theme_classic() +
-  labs(title = "Mean distance between wild boar and scare-off", subtitle = "Frida")+
-  xlab("Mode scare-off") + ylab("Distance")
-
-
+####################################################################################
 #### APPROACH 1 ####
+####################################################################################
+
 # Download crop data 
 crop_fanel <- read_sf("Feldaufnahmen_Fanel.gpkg")
-
 head(crop_fanel)
-
 summary(crop_fanel)
-
 unique(crop_fanel$Frucht)
-
 st_crs(crop_fanel)
 
 # Visualization
 WSS_2016_01 <- schreck2 %>%
   filter(id == "WSS_2016_01")
+
 ggplot(crop_fanel) +
   geom_sf(aes(fill = Frucht)) +
   geom_sf(data = WSS_2016_01) +
   geom_sf_text(data = WSS_2016_01, aes(label = id), size=3, color= "white", check_overlap = TRUE)+
-  geom_sf_text(data = crop_fanel, aes(label = FieldID), size =1.2)
+  geom_sf_text(data = crop_fanel, aes(label = FieldID), size =1.2) +
+  labs(title = "Diffrent crop-types in Fenel", subtitle = "Schreck-Location WSS_2016_01", tag = "Fig. 1") +
+  theme(plot.tag.position = "bottomleft")
+  
 # Our schreck WSS_2016_01 is located in "Wiese number 2"
 
 
@@ -374,7 +269,8 @@ ggplot(crop_fanel) +
   geom_sf(aes(fill = Frucht)) +
   geom_sf(data = Caroline) +
   geom_sf(data = WSS_2016_01) +
-  geom_sf_text(data = WSS_2016_01, aes(label = id), size=3, color= "white", check_overlap = TRUE)
+  geom_sf_text(data = WSS_2016_01, aes(label = id), size=3, color= "white", check_overlap = TRUE) +
+  labs(title = "Diffrent crop-types in Fenel", subtitle = "wild boar: Caroline")
 
 # Miriam
 Miriam <-  st_join(Miriam, crop_fanel)
@@ -384,7 +280,8 @@ ggplot(crop_fanel) +
   geom_sf(aes(fill = Frucht)) +
   geom_sf(data = Miriam) +
   geom_sf(data = WSS_2016_01) +
-  geom_sf_text(data = WSS_2016_01, aes(label = id), size=3, color= "white", check_overlap = TRUE)
+  geom_sf_text(data = WSS_2016_01, aes(label = id), size=3, color= "white", check_overlap = TRUE)+
+  labs(title = "Diffrent crop-types in Fenel", subtitle = "wild boar: Miriam")
 
 # Frida
 Frida <-  st_join(Frida, crop_fanel)
@@ -394,7 +291,9 @@ ggplot(crop_fanel) +
   geom_sf(aes(fill = Frucht)) +
   geom_sf(data = Frida) +
   geom_sf(data = WSS_2016_01) +
-  geom_sf_text(data = WSS_2016_01, aes(label = id), size=3, color= "white", check_overlap = TRUE)
+  geom_sf_text(data = WSS_2016_01, aes(label = id), size=3, color= "white", check_overlap = TRUE)+
+  labs(title = "Diffrent crop-types in Fenel", subtitle = "wild boar: Frida")
+
 
 
 # Visual exploration for Caroline (only most relevant "Frucht" displayed!!!)
@@ -532,4 +431,129 @@ tmap_mode("view")
 tm_shape(mcp) +
   tm_polygons(col = "TierName",alpha = 0.4,border.col = "red") +
   tm_legend(bg.color = "white") 
+
+
+
+
+
+####################################################################################
+#### APPROACH 2 ####
+####################################################################################
+
+#### CAROLINE 2016_01 (Approach 2)####
+
+# new column Date
+# new column schreck off before / on / off after
+# new column with coordinates
+# new coloumn with distance between wild boar locations and schreck 2016_01
+Caroline <- Caroline %>%
+  mutate(Date = as.Date(DatetimeUTC),
+         Schreck = ifelse(Date >= as.Date("2014-05-01") & Date <= as.Date("2014-10-28"), "on", "off"),
+         X = unlist(map(Sabine$geometry,1)),
+         Y = unlist(map(Sabine$geometry,2)),
+         distance = sqrt((X-2570935)^2+(Y-1205197)^2))
+
+# Breit --> Longformat
+ggplot(Sabine, aes(Schreck, distance)) +
+         Schreck = case_when(Date < as.Date("2016-04-04") ~ "off before",
+                                 Date >= as.Date("2016-04-04") & Date <= as.Date("2016-04-23") ~ "on",
+                                 Date > as.Date("2016-04-23") ~ "off after") + 
+         X = unlist(map(Caroline$geometry,1)) +
+         Y = unlist(map(Caroline$geometry,2)) +
+         distance = sqrt((X-2570935)^2+(Y-1205197)^2) %>%
+  filter(Date > as.Date("2016-02-29")& Date < as.Date("2016-07-01"))
+
+# Boxplot Caroline
+ggplot(Caroline, aes(Schreck, distance)) +
+  geom_boxplot() +
+  theme_classic() +
+  labs(title = "Mean distance between wild boar and schreck-locations", subtitle = "Sabine")+
+  xlab("Mode schreck") + ylab("Distance")
+
+# T-Test MUSS NOCHMALS GEMACHT WERDEN MIT VOR (OFF) / WÄHREND (ON) / NACH (OFF)
+
+# Mean distance when scare-off measures are turned on is smaller than when it's turned off
+# H0: Distance Sabine_on is smaller than Sabine_off
+# H1: Distance Sabine_on is greater than Sabine_off
+
+Sabine_on <- Sabine %>%
+  filter(Schreck == "on")
+  
+Sabine_off <- Sabine %>%
+  filter(Schreck == "off")
+
+t.test(Sabine_on$distance, Sabine_off$distance, var.equal = TRUE, alternative = c("greater"))
+
+
+par(mfrow=c(1,1))
+
+
+#Compare Mode on and off
+# On
+ggplot()+
+  geom_point(data = Sabine_on, aes(X, Y, color = "Sabine")) +
+  geom_sf(data = schreck2) +
+  # geom_sf_label(data = schreck2, aes(label = id)) +
+  geom_sf_text(data = schreck2, aes(label = id), size=2, check_overlap = TRUE) +
+  coord_sf(datum = 2056) +
+  # scale_y_continuous(limits=c(1205150,1205250)) +
+  # scale_x_continuous(limits=c(2570900,2571000)) +
+  theme_classic() +
+  labs(colour = "Legend", title = "Schreck-Mode: On", subtitle = "Wild boar: Sabine")
+# suitable: 2014_06, 2017_03, 2016_04, 2014_04, 2014_05
+
+#Off
+ggplot()+
+  geom_point(data = Sabine_off, aes(X, Y, color = "Sabine")) +
+  geom_sf(data = schreck2) +
+  # geom_sf_label(data = schreck2, aes(label = id)) +
+  geom_sf_text(data = schreck2, aes(label = id), size=2, check_overlap = TRUE) +
+  coord_sf(datum = 2056) +
+  # scale_y_continuous(limits=c(1205150,1205250)) +
+  # scale_x_continuous(limits=c(2570900,2571000)) +
+  theme_classic() +
+  labs(colour = "Legend", title = "Schreck-Mode: Off", subtitle = "Wild boar: Sabine")
+# suitable: 2014_06, 2017_03, 2016_04, 2014_04, 2014_05
+
+plot(Sabine_off$Date, Sabine_off$distance)
+
+ggplot ()+
+  geom_point(data = Sabine_off, aes(distance, Date))
+
+
+### MIRIAM 2016_01 (Approach 2) ####
+Miriam <- Miriam %>%
+  mutate(Date = as.Date(DatetimeUTC),
+         Schreck = case_when(Date < as.Date("2016-04-04") ~ "off before",
+                             Date >= as.Date("2016-04-04") & Date <= as.Date("2016-04-23") ~ "on",
+                             Date > as.Date("2016-04-23") ~ "off after"),
+         X = unlist(map(Miriam$geometry,1)),
+         Y = unlist(map(Miriam$geometry,2)),
+         distance = sqrt((X-2570935)^2+(Y-1205197)^2)) 
+         
+# Boxplot Miriam
+ggplot(Miriam, aes(Schreck, distance)) +
+  geom_boxplot() +
+  theme_classic() +
+  labs(title = "Mean distance between wild boar and scare-off", subtitle = "Miriam")+
+  xlab("Mode scare-off") + ylab("Distance")
+
+
+### FRIDA 2016_01 (Approach 2) ####
+Frida <- Frida %>%
+  mutate(Date = as.Date(DatetimeUTC),
+         Schreck = case_when(Date < as.Date("2016-04-04") ~ "off before",
+                             Date >= as.Date("2016-04-04") & Date <= as.Date("2016-04-23") ~ "on",
+                             Date > as.Date("2016-04-23") ~ "off after"),
+         X = unlist(map(Frida$geometry,1)),
+         Y = unlist(map(Frida$geometry,2)),
+         distance = sqrt((X-2570935)^2+(Y-1205197)^2)) 
+
+# Boxplot Frida
+ggplot(Frida, aes(Schreck, distance)) +
+  geom_boxplot() +
+  theme_classic() +
+  labs(title = "Mean distance between wild boar and scare-off", subtitle = "Frida")+
+  xlab("Mode scare-off") + ylab("Distance")
+
 
