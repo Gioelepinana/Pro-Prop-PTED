@@ -134,6 +134,8 @@ ggplot(schreck_locations_swiss_coord, label = "id")+
   scale_y_continuous(limits=c(1206500,1207000)) +
   scale_x_continuous(limits=c(2570000,2571000))
 
+
+
 # Buffer (does not work; resp. take too long to run)
 # my_buffer <- st_buffer(wildschwein_BE_spatial, dist = 1000)
 # points_inside_buffer <- filter(schreck_locations_swiss_coord, schreck_locations_swiss_coord %in% my_buffer)
@@ -449,12 +451,12 @@ tm_shape(mcp) +
 Caroline <- Caroline %>%
   mutate(Date = as.Date(DatetimeUTC),
          Schreck = ifelse(Date >= as.Date("2014-05-01") & Date <= as.Date("2014-10-28"), "on", "off"),
-         X = unlist(map(Sabine$geometry,1)),
-         Y = unlist(map(Sabine$geometry,2)),
+         X = unlist(map(Caroline$geometry,1)),
+         Y = unlist(map(Caroline$geometry,2)),
          distance = sqrt((X-2570935)^2+(Y-1205197)^2))
 
 # Breit --> Longformat
-ggplot(Sabine, aes(Schreck, distance)) +
+ggplot(Caroline, aes(Schreck, distance)) +
          Schreck = case_when(Date < as.Date("2016-04-04") ~ "off before",
                                  Date >= as.Date("2016-04-04") & Date <= as.Date("2016-04-23") ~ "on",
                                  Date > as.Date("2016-04-23") ~ "off after") + 
@@ -467,8 +469,10 @@ ggplot(Sabine, aes(Schreck, distance)) +
 ggplot(Caroline, aes(Schreck, distance)) +
   geom_boxplot() +
   theme_classic() +
-  labs(title = "Mean distance between wild boar and schreck-locations", subtitle = "Sabine")+
+  labs(title = "Mean distance between wild boar and schreck-locations", subtitle = "Caroline") +
   xlab("Mode schreck") + ylab("Distance")
+
+
 
 # T-Test MUSS NOCHMALS GEMACHT WERDEN MIT VOR (OFF) / WÄHREND (ON) / NACH (OFF)
 
