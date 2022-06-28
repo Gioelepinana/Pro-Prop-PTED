@@ -462,7 +462,9 @@ ggplot(Caroline, aes(Schreck, distance)) +
                                  Date > as.Date("2016-04-23") ~ "off after") + 
          X = unlist(map(Caroline$geometry,1)) +
          Y = unlist(map(Caroline$geometry,2)) +
-         distance = sqrt((X-2570935)^2+(Y-1205197)^2) %>%
+         distance = sqrt((X-2570935)^2+(Y-1205197)^2)
+  
+  
   filter(Date > as.Date("2016-02-29")& Date < as.Date("2016-07-01"))
 
 # Boxplot Caroline
