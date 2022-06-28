@@ -370,13 +370,13 @@ bind_rows(Frida,Miriam, Caroline) %>%
 
 
 #option 2: mit cowlplot
-library(cowplot)
+# library(cowplot)
 
 # p1 <- ggplot()...
 # p2 <- ggplot()
 # p3 <- ggplot()
 
-cowplot::plot_grid(p1, p2)
+# cowplot::plot_grid(p1, p2)
 
 # option 3:
   
