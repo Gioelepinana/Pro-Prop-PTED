@@ -436,7 +436,6 @@ bind_rows(Caroline, Miriam, Frida) %>%
 
 ```
 
-
 ```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
 ####################################################################################
 #### APPROACH 1 ####
