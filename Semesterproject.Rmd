@@ -6,8 +6,6 @@ output: html_document
 
 ---
 
-<!-- You can add  your R Code with Code chunks-->
-
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
 
 # You can set chunk options individually per code chunk, as was done with this
@@ -22,8 +20,6 @@ output: html_document
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
 ```
-
-
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE, results=FALSE}
 
@@ -40,8 +36,6 @@ ipak(packages)
 
 ```
 
-
-<!-- the following is just a placeholder for the title-picture, remove it afterwards!-->
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
 
 # Picture
@@ -49,28 +43,22 @@ ipak(packages)
 ```
 
 ## Abstract
+
 Over the past few years, the population of wild boars in Switzerland has increased rapidly. As the number of wild boars increases, so does the damage to agriculture, as they seek for food in the fields. To counteract this damage, new preventive measures such as hunt, schreck, staged shots and so on have been developed with the aim of preventing the wild boars from entering the fields. Within this semester project we want to measure the effectiveness of the scare-off measure schreck. The Zurich University of Applied Sciences provided us with three datasets for our research. One dataset contains the coordinates of 98 wild boars in Fenel in region of Bern, Switzerland over the period from May 2014 to October 2016. The other two datasets contains the coordinates of the scare positions and time intervals when the scare was turned on and off. To investigate the question of their effectiveness, two different methods are analyzed and at the end critically discussed on their advantages and disadvantages. 
 
 
 ## Introduction
+
 Until 1945, only a few animals arrive in Switzerland from Germany, France and Italy. Between 1945 and 1952 more frequent wild boars were then recorded in Switzerland. However, the population was not able to establish itself until between 1970 and 1990. Since 1990, the population of wild boars has been growing strongly, as evidenced by the number of animals shot and killed in traffic accidents. Possible reasons for the strong population increase are milder winters, an additional number of fattening years as well as the almost inexhaustible and mostly freely available food supply on agricultural land. Based on the planned realization of wildlife passages, it is assumed that the population will expand in the Central Plateau as well as in the Pre-Alps in the next few years. (Graf R.F and Fischer C.(Hrsg.), 2021)
 
 Wild boars are omnivores and spend a large part of their time searching for food, covering an average of 5 km per night. Wild boars are mainly active during the night and as the only representative of the cloven-hoofed animals, they can reach food in the ground. To do this, it digs up the top layer of soil to a depth of 20-60 cm with its snout disc, which is ideally suited for this purpose. In the soil wild boars find large quantities of invertebrates and roots, but also mice, the nests and supplies. Wild boars also find a large part of their food on agricultural land. Particularly popular are corn, wheat and canola. Over the summer and in the fall wild boars eat fat, from which they can then feed over the meager winter months and also in the spring. Wild boars are very loyal to their location, but do not defend a territory. Thus, several herds can be on the move in the same area. Aggressive behavior between the rods occurs only when they occur at the same time at a food source. Depending on the region, the activity areas vary in size, with 2.5-12 km2 for males and 4.5-30 km2 for does. (Graf R.F and Fischer C.(Hrsg.), 2021) 
 
 Agricultural fields can be protected with prevention methods such as electric fencing clasping closures and hunt (Graf R.F and Fischer C.(Hrsg.), 2021). However, there is currently no prevention method that works 100%. Potential reasons for this can be related to the different behavioral and movement patterns of wild boar. Since the existing methods are still complex and expensive, researchers at the Zurich University of Applied Sciences have therefore developed an acoustic method called "Schreck". In this method, alarm and warning calls of wild boars are reproduced in order to keep wild boars away from entering fields and prevent damage. The acoustic wild boar scare now provides a flexible and intelligent prevention method. This thesis examines the effectiveness of this new prevention method in order to enable sustainable wild boar management (Suter S. 20XX).This can not only prevent direct conflicts, but also indirectly limit accessible population growth. (Graf R.F and Fischer C.(Hrsg.), 2021)
 
+
 ## Material and Methods
-Within this semester project, two methods are analyzed in order to determine the effectiveness of the scare method and their strengths and weaknesses are compared
 
-### Methods
-
-* **(A) Method**: The first approach compares the mean distance between wild boar and schreck-locations, when turned on and when turned off. Therefore we measure a statistical effectiveness using p-value: 
-*define relevant schreck-locations : the ones near the wild boar 
-*choose 3 wild board to do the analysis
-*calculate distances 
-*t-Test and box-plot 
-
-* **(B) Method**: The second approach analyzes the presence of wild boars by selected agricultural fields. Thereby, it is examined which wild boars were observed in the selected field before the activation of the scare and if and how often they were observed in the same field after the activation. Based on this analysis, a conclusion can be made by statistical analysis (P-value). 
+Within this semester project, two methods are analyzed in order to determine the effectiveness of the scare method and their strengths and weaknesses are compared. Therefore we work with following introduced datasets:
 
 ### Datasets
 
@@ -85,12 +73,12 @@ knitr::kable(head(wildschwein_BE), caption = "sample of dataset wildschweine_BE"
 
 ```
 
-
 #### Dataset schreck_locations and schreck_agenda
 
 The second "schreck_locations" and third "schreck_agenda" datasets contain the coordinates of the schreck-positions and time intervals when the scare was turned on and off. In a futher step, the two data sets were joined into one data set using a left join.
-<br><br>
+
 schreck_locations
+
 Each fix point in the dataset contains the apperent attributes (id, region, flurname, kultur, installationshohe, zaun, jagddruck, lat and lon)
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
@@ -100,6 +88,7 @@ knitr::kable(head(schreck_locations))
 ```
 
 schreck_agenda
+
 Each fix point in the dataset contains the apperent attributes (id, datum_on, datum_off, modus, lautstaerke, intervall, ausrichtung_min, ausrichtung_max and phase)
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
 
@@ -108,12 +97,12 @@ knitr::kable(head(schreck_agenda))
 ```
 
 ### Pre-processing
+
 #### Dataset wildschweine_BE 
+
 Based on a sampling analysis, GPS collars for wild boar are aheaded to a complex sampling procedure. This can be seen in the following figure. 
 
-Sample regime
-<br><br>
-```{r, echo = FALSE, warning=FALSE, message=FALSE}
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
 
 par(mfrow = c(2,2))
 # Sample regime
@@ -139,8 +128,8 @@ wildschwein_BE %>%
 The wild boars were caught sequentially. Based on a temporal overlap analysis, it is clear that some of them do not overlap. 
 
 Temporal Overlap
-<br><br>
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.cap="Temporal overlap from 19 wild boar in the region Fenel"}
 
 sampling_periods <- wildschwein_BE %>%
   group_by(TierID, TierName, CollarID) %>%
@@ -162,12 +151,9 @@ wildschwein_overlap_temp %>%
 
 ```
 
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
+# Spatial Overlap
 
-A spatial overlay analysis was created to identify the movement behavior of wild boars. This is shown in the following plot. 
-
-Spatial Overlap
-<br><br>
-```{r, echo = FALSE, warning=FALSE, message=FALSE}
 wildschwein_sf <- wildschwein_BE %>%
   st_as_sf(coords = c("E", "N"), crs = 2056) %>%
   mutate(tiercollar = paste(TierID, TierName, CollarID)) 
@@ -188,7 +174,7 @@ wildschwein_convex_hull %>%
 
 ```
 
-Afterwards the coordinates of the schreck locations from GPS to CH1903+ / LV95 were changed. For this purpose, the dataframe was first transformed into a spatial object. Using different spatial plots of the wild boars as well as the schreck coordinates, suitable schreck locations were manually selected. These following schrecks are suitable for our analysis:
+A spatial overlay analysis was created to identify the movement behavior of wild boars. This is shown in the following plot. Afterwards the coordinates of the schreck locations from GPS to CH1903+ / LV95 were changed. For this purpose, the dataframe was first transformed into a spatial object. Using different spatial plots of the wild boars as well as the schreck coordinates, suitable schreck locations were manually selected. These following schrecks are suitable for our analysis:
 
 * WSS_2016_05
 * WSS_2016_01
@@ -234,7 +220,6 @@ wildschwein_BE_spatial <- st_as_sf(wildschwein_BE,
                                           crs = 2056)
 ```
 
-
 ```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
 ## Plotting the location of the schreck locations
 ggplot(schreck_locations_swiss_coord)+
@@ -267,7 +252,9 @@ schrecks <- schreck_locations_swiss_coord %>%
 ggplot(schrecks)+
   geom_sf() +
   coord_sf(datum = 2056)
+```
 
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
 ## create dataframe with single wild board 
 Ueli <- wildschwein_BE_spatial %>%
   filter(TierName == "Ueli")
@@ -314,17 +301,27 @@ schreck2 <- left_join(schrecks,schreck_agenda,by="id")
 ```
 
 
+### Methods
+
+#### Method 1 
+
+The first approach compares the mean distance between wild boar and schreck-locations, when turned on and when turned off. Therefore we measure a statistical effectiveness using p-value: 
+*define relevant schreck-locations : the ones near the wild boar 
+*choose 3 wild board to do the analysis
+*calculate distances 
+*t-Test and box-plot 
+
 Further analyses with the help of plots show that especially the three wild boars Caroline, Miriam and Frida were frequently in the surroundings of the schreck WSS_2016_01. For this reason, the schreck WSS_2016_01 and the three wild boars were selected for the further analysis. The following three plots show the trajectories of the respective wild boars. The black points indicate the fright locations, in which the dense cover surrounding WSS_2016_01 can be clearly seen. 
-<br><br>
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.cap="test"}
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
 ## plotting single trajectories with schreck-locations
 # in this graphs choose which schreck are suitable for the anaylsis 
 # (the ones near the location of the wild board location)
 ## check if the telemetry period correspond to the time where schreck are active or not 
 # There has to be a period before the schreck it is turned on and a period after the schreck it is turned off
 # The following Wild boar are suitable for the analysis!!
-
 # Caroline sieht realitv gut aus mit WSS_2016_01
+
 ggplot()+
   geom_sf(data = schreck2) +
   geom_sf(data = Caroline, aes(color = "Caroline")) +
@@ -334,8 +331,7 @@ ggplot()+
   labs(colour = "Legend", title = "Single trajectories with schreck-locations", subtitle = "Wild boar: Caroline")
 ```
 
-
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.cap="test2"}
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
 # Miriam sieht perfekt aus mit WSS_2016_01
 ggplot()+
   geom_sf(data = schreck2) +
@@ -346,8 +342,7 @@ ggplot()+
   labs(colour = "Legend", title = "Single trajectories with schreck-locations", subtitle = "Wild boar: Miriam")
 ```
 
-
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.cap="test3"}
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
 # Frida sieht perfekt aus mit WSS_2016_01
 ggplot()+
   geom_sf(data = schreck2) +
@@ -359,49 +354,90 @@ ggplot()+
 
 ```
 
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.cap="Trajectories from wild boar Caroline, Miriam and Frida"}
 
-```{r}
-# Option 1: Mit facet_wrap()
-bind_rows(Frida,Miriam, Caroline) %>%
+WSS_2016_01 <- schreck2 %>%
+  filter(id == "WSS_2016_01")
+
+# Option 1: With facet_wrap()
+bind_rows(Caroline,Miriam, Frida) %>%
   ggplot() +
-  geom_sf(data = schreck2, color = "red") +
   geom_sf() +
+  geom_sf(data = schreck2, color = "red") +
+  geom_sf(data = WSS_2016_01, color = "yellow") +
   facet_wrap(~TierName)
 
+```
 
-#option 2: mit cowlplot
-# library(cowplot)
 
-# p1 <- ggplot()...
-# p2 <- ggplot()
-# p3 <- ggplot()
+#### Method 2
 
-# cowplot::plot_grid(p1, p2)
+The second approach analyzes the presence of wild boars by selected agricultural fields. Thereby, it is examined which wild boars were observed in the selected field before the activation of the scare and if and how often they were observed in the same field after the activation. Based on this analysis, a conclusion can be made by statistical analysis (P-value). 
 
-# option 3:
+For the second approach, the data package "Feldaufnahmen_Fanel" was additionally used, which subdivides the land cover resp. the type of agricultural area of the nature reserve Fanel. From the figure it can be concluded that the suitable schreck WSS_2016_01 is located on the grassland area No.2 (German: Wiese Nr. 2). Grassland areas are optimal for our research question, since wild boars spoil the ground during their search for food.
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
+
+#### APPROACH 1 ####
+
+# Download crop data 
+crop_fanel <- read_sf("Feldaufnahmen_Fanel.gpkg")
+
+```
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+# Visualization
+
+WSS_2016_01 %>%
+  st_buffer(500) %>% 
+  st_bbox() %>%
+  st_as_sfc() %>% st_as_sf() -> WSS_2016_01_bbox
+
+# st_intersection()
+
+ggplot(st_intersection(crop_fanel, WSS_2016_01_bbox)) +
+  geom_sf(aes(fill = Frucht)) +
+  geom_sf(data = WSS_2016_01) +
+  # geom_sf_text(data = WSS_2016_01, aes(label = id), size=3, color= "white", check_overlap = TRUE)+
+  geom_sf_text(aes(label = Frucht), size =1.2) +
+  labs(title = "Diffrent crop-types in Fenel", subtitle = "Schreck-Location WSS_2016_01")
   
-# mit out.width="30%" (bei 3 Bilder) oder "49%"(bei zwei bilder) und option fig.show = "hold"
+
+# Our schreck WSS_2016_01 is located in "Wiese number 2"
+```
+
+Subsequently, to check for spatial overlap, the datasets of the 3 selected wild boars were merged with the dataset "Feldaufnahmen_Fanel". 
+
+
+
+
+
+
+
+###  Problems and limitations
+In our analysis, three female wild boars were selected based on their movement patterns. Since the behavior of female and male wild boars differs, the analysis with male wild boars would have been quite useful as a comparison. However, this was not possible within the framework of this work, but it may be considered for a future work.
+
+## Results
+
+### Method 1
+
+Der Boxplot sowie die statische Auswertung der Einfaktoriellen Anova haben ergeben, dass es sich hierbei um einen signifikanten Unterschied in der Mittleren Distanz zum Schreck WSS_20216_01 in den verschiedenen Modus gibt. Aufgrund dieser Methode ist bestätigt, dass der Schreck wirkung auf die Wildschweine zeigt. 
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.cap="Mean Distance to WSS_2016_01 Caroline, Miriam and Frida "}
+
+# Reihenfolge einfügen
+bind_rows(Caroline, Miriam, Frida) %>%
+  ggplot() +
+  geom_boxplot(aes(Schreck, distance)) +
+  facet_wrap(~TierName) +
+  labs(title = "Mean distance to WSS_2016_01 on diffrent Modus")+
+  xlab("Modus") + ylab("Distance")
 
 
 ```
 
 
-### Method 1
-
-
-The first approach compares the mean distance between wild boar and schreck-locations, when turned on and when turned off. Therefore we measure a statistical effectiveness using p-value: 
-*define relevant schreck-locations : the ones near the wild boar 
-*choose 3 wild board to do the analysis
-*calculate distances 
-*t-Test and box-plot 
-
-Within the first approch the mean distance will compared 
-
-
-
-```{r, echo = FALSE, warning=FALSE, message=FALSE}
-
-
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
 ####################################################################################
 #### APPROACH 1 ####
 ####################################################################################
@@ -424,19 +460,20 @@ ggplot(Caroline, aes(Schreck, distance)) +
   labs(title = "Mean distance between wild boar and scare-off", subtitle = "Caroline")+
   xlab("Mode scare-off") + ylab("Distance")
 
+```
+
+
+```{r, echo = FALSE, warning=FALSE, message=TRUE, fig.show='hide'}
 
 # ANOVA Caroline
 
-Caroline_off_before <- Caroline %>%
-  filter(Schreck == "off before")
-  
-Caroline_on <- Caroline %>%
-  filter(Schreck == "on")
+a1 <- aov(distance~Schreck, data = Caroline)
+summary(a1)
 
-Caroline_off_after <- Caroline %>%
-  filter(Schreck == "off after")
+```
 
 
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
 ### MIRIAM 2016_01 ####
 Miriam <- Miriam %>%
   mutate(Date = as.Date(DatetimeUTC),
@@ -454,9 +491,19 @@ ggplot(Miriam, aes(Schreck, distance)) +
   labs(title = "Mean distance between wild boar and scare-off", subtitle = "Miriam")+
   xlab("Mode scare-off") + ylab("Distance")
 
+```
+
+```{r, echo = FALSE, warning=FALSE, message=TRUE, fig.show='hide'}
 
 # ANOVA Miriam
 
+a2 <- aov(distance~Schreck, data = Miriam)
+summary(a2)
+
+```
+
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
 ### FRIDA 2016_01 ####
 Frida <- Frida %>%
   mutate(Date = as.Date(DatetimeUTC),
@@ -474,63 +521,35 @@ ggplot(Frida, aes(Schreck, distance)) +
   labs(title = "Mean distance between wild boar and scare-off", subtitle = "Frida")+
   xlab("Mode scare-off") + ylab("Distance")
 
+```
+
+```{r, echo = FALSE, warning=FALSE, message=TRUE, fig.show='hide'}
 
 # ANOVA Frida
 
+a3 <- aov(distance~Schreck, data = Frida)
+summary(a3)
 
 ```
 
 
 ### Method 2
 
-For the second approach, the data package "Feldaufnahmen_Fanel" was additionally used, which subdivides the land cover resp. the type of agricultural area of the nature reserve Fanel. From the figure it can be concluded that the suitable schreck WSS_2016_01 is located on the grassland area No.2 (German: Wiese Nr. 2). Grassland areas are optimal for our research question, since wild boars spoil the ground during their search for food.
 
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
+# Caroline 
 
-```{r, echo = FALSE, warning=FALSE, message=FALSE, , fig.show='hide'}
-
-#### APPROACH 1 ####
-# Download crop data 
-crop_fanel <- read_sf("Feldaufnahmen_Fanel.gpkg")
-
-```
-
-
-```{r, echo = FALSE, warning=FALSE, message=FALSE}
-# Visualization
-WSS_2016_01 <- schreck2 %>%
-  filter(id == "WSS_2016_01")
-
-WSS_2016_01 %>%
-  st_buffer(500) %>% 
-  st_bbox() %>%
-  st_as_sfc() %>% st_as_sf() -> WSS_2016_01_bbox
-
-st_intersection()
-
-ggplot(st_intersection(crop_fanel, WSS_2016_01_bbox)) +
-  geom_sf(aes(fill = Frucht)) +
-  geom_sf(data = WSS_2016_01) +
-  # geom_sf_text(data = WSS_2016_01, aes(label = id), size=3, color= "white", check_overlap = TRUE)+
-  geom_sf_text(aes(label = Frucht), size =1.2) +
-  labs(title = "Diffrent crop-types in Fenel", subtitle = "Schreck-Location WSS_2016_01")
-
-# Our schreck WSS_2016_01 is located in "Wiese number 2"
-```
-
-Subsequently, to check for spatial overlap, the datasets of the 3 selected wild boars were merged with the dataset "Feldaufnahmen_Fanel". 
-
-Caroline
-
-```{r, echo = FALSE, warning=FALSE, message=FALSE}
 Caroline <-  st_join(Caroline, crop_fanel)
-Caroline
 
-ggplot(crop_fanel) +
+p1 <- ggplot(st_intersection(crop_fanel, WSS_2016_01_bbox, Caroline)) +
   geom_sf(aes(fill = Frucht)) +
   geom_sf(data = Caroline) +
-  geom_sf(data = WSS_2016_01) +
-  geom_sf_text(data = WSS_2016_01, aes(label = id), size=3, color= "white", check_overlap = TRUE) +
-  labs(title = "Diffrent crop-types in Fenel", subtitle = "wild boar: Caroline")
+  geom_sf(data = WSS_2016_01, color = "yellow") +
+  geom_sf_text(aes(label = Frucht), size =1.2) +
+  labs(title = "Trajectorie of wild boar Caroline an diffrent crop types", subtitle = "Schreck-Location   WSS_2016_01 in yellow")
+  
+
+# Our schreck WSS_2016_01 is located in "Wiese number 2"
 
 # Visual exploration for Caroline (only most relevant "Frucht" displayed!!!)
 Caroline_2 <- Caroline %>%
@@ -562,19 +581,19 @@ ggplot(Caroline_2, aes(hour,perc, fill = Frucht)) +
 
 ```
 
-Miriam
-```{r, echo = FALSE, warning=FALSE, message=FALSE}
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
 
 # Miriam
 Miriam <-  st_join(Miriam, crop_fanel)
-Miriam
 
-ggplot(crop_fanel) +
+
+p2<- ggplot(st_intersection(crop_fanel, WSS_2016_01_bbox, Miriam)) +
   geom_sf(aes(fill = Frucht)) +
   geom_sf(data = Miriam) +
-  geom_sf(data = WSS_2016_01) +
-  geom_sf_text(data = WSS_2016_01, aes(label = id), size=3, color= "white", check_overlap = TRUE)+
-  labs(title = "Diffrent crop-types in Fenel", subtitle = "wild boar: Miriam")
+  geom_sf(data = WSS_2016_01, color = "yellow") +
+  geom_sf_text(aes(label = Frucht), size =1.2) +
+  labs(title = "Trajectorie of wild boar Miriam an diffrent crop types", subtitle = "Schreck-Location WSS_2016_01 in yellow")
+
 
 # Visual exploration for Miriam 
 Miriam_2 <- Miriam %>%
@@ -606,21 +625,19 @@ ggplot(Miriam_2, aes(hour,perc, fill = Frucht)) +
 
 ```
 
-
-Frida
-```{r, echo = FALSE, warning=FALSE, message=FALSE}
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
 
 # Frida
 
 Frida <-  st_join(Frida, crop_fanel)
-Frida
 
-ggplot(crop_fanel) +
+
+ggplot(st_intersection(crop_fanel, WSS_2016_01_bbox, Frida)) +
   geom_sf(aes(fill = Frucht)) +
   geom_sf(data = Frida) +
-  geom_sf(data = WSS_2016_01) +
-  geom_sf_text(data = WSS_2016_01, aes(label = id), size=3, color= "white", check_overlap = TRUE)+
-  labs(title = "Diffrent crop-types in Fenel", subtitle = "wild boar: Frida")
+  geom_sf(data = WSS_2016_01, color = "yellow") +
+  geom_sf_text(aes(label = Frucht), size =1.2) +
+  labs(title = "Trajectorie of wild boar Frida an diffrent crop types", subtitle = "Schreck-Location WSS_2016_01 in yellow")
 
 # Visual exploration for Frida 
 Frida_2 <- Frida %>%
@@ -650,6 +667,49 @@ ggplot(Frida_2, aes(hour,perc, fill = Frucht)) +
   labs(title = "Percentages of samples in a given crop per hour",subtitle = "Only showing the most common categories")
 
 ```
+
+```{r, echo = FALSE, warning=FALSE, message=TRUE, fig.show='hide'}
+
+# ANOVA
+
+Caroline_3 <- Caroline_2 %>%
+  filter(Frucht == "Wiese")
+  
+Miriam_3 <- Miriam_2 %>%
+  filter(Frucht == "Wiese")
+
+Frida_3 <- Frida_2 %>%
+  filter(Frucht == "Wiese")
+
+# Caroline
+a4 <- aov(perc~Schreck, data = Caroline_3)
+summary(a4)
+
+# Miriam
+a5 <- aov(perc~Schreck, data = Miriam_3)
+summary(a6)
+
+# Frida
+a6 <- aov(perc~Schreck, data = Frida_3)
+summary(a6)
+
+```
+
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.cap="Mean Distance to WSS_2016_01 Caroline, Miriam and Frida "}
+
+# Reihenfolge einfügen
+bind_rows(Caroline_3, Miriam_3, Frida_3) %>%
+  ggplot() +
+  geom_boxplot(aes(Schreck, perc)) +
+  facet_wrap(~TierName) +
+  labs(title = "Mean Perc to WSS_2016_01 on diffrent Modus")+
+  xlab("Modus") + ylab("Perc")
+
+
+```
+
+
 
 
 
@@ -713,20 +773,6 @@ Frida_approach2 <- Frida %>%
 
 
 Statistische Test? oder nur vergleich der Anzahl Punkte?
-
-
-
-###  Problems and limitations
-In our analysis, three female wild boars were selected based on their movement patterns. Since the behavior of female and male wild boars differs, the analysis with male wild boars would have been quite useful as a comparison. However, this was not possible within the framework of this work, but it may be considered for a future work.
-
-## Results
-
-Compare Mode on and off
-```{r, echo = FALSE, warning=FALSE, message=FALSE}
-```
-
-<!-- the following is just a placeholder text, remove it!-->
-Philosophy oneself passion play fearful self noble zarathustra deceptions sexuality. Endless ocean of oneself dead ocean. Selfish decrepit.
 
 ## Discussion
 
