@@ -659,6 +659,7 @@ summary(a6)
 
 Streifgebiet
 
+
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
 
 ###  Visualization of the "Streifgebiet"
