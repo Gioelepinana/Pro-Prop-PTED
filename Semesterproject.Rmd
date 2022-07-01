@@ -329,12 +329,13 @@ ggplot()+
   labs(colour = "Legend", title = "Single trajectories with schreck-locations", subtitle = "Wild boar: Frida")
 
 ```
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.cap="Trajectories from wild boar Caroline, Miriam and Frida"}
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.cap="Trajectories from wild boar Caroline", fig.height=2}
 
 WSS_2016_01 <- schreck2 %>%
   filter(id == "WSS_2016_01")
 
-# Option 1: With facet_wrap()
+# Visualization With facet_wrap()
 bind_rows(Caroline,Miriam, Frida) %>%
   ggplot() +
   geom_sf() +
@@ -353,7 +354,7 @@ By looking at the scare data it turned out that the scare was powered on for som
 
 * **Methode (1):** The first approach compares the mean distance between wild boar and schreck-locations in the three different time periods. For this purpose, the distances from all data points of the three wild boars to the scare were calculated. These distances were afterwards statistically compared by using an one-way anova and a boxplot.
 
-* **Methode (2):** The second approach analyzes the presence of wild boars by selected agricultural fields. Thereby, it is examined which wild boars were observed in the selected field before the activation of the scare and if and how often they were observed in the same field after the activation. Based on this analysis, a conclusion was  made by using as well an one-way anova and a boxplot. <br><br>For the second approach, the data package "Feldaufnahmen_Fanel" was additionally used, which subdivides the land cover resp. the type of agricultural area of the nature reserve Fanel. From the figure it can be concluded that the suitable schreck WSS_2016_01 is located on the grassland area No.2 (German: Wiese Nr. 2). Grassland areas are optimal for our research question, since wild boars spoil the ground during their search for food.
+* **Methode (2):** The second approach analyzes the presence of wild boars by selected agricultural fields. Therefore, the data package "Feldaufnahmen_Fanel" was additionally used, which subdivides the land cover resp. the type of agricultural area of the nature reserve Fanel. It is examined which wild boars were observed in the selected field before the activation of the scare and if and how often they were observed in the same field after the activation. Based on this analysis, a conclusion was  made by using as well an one-way anova and a boxplot.
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
 
@@ -478,8 +479,7 @@ summary(a3)
 
 ### Method 2
 
-Methode 2
-
+The following plot shows a reduced extract of Fanel's land use area. Iit can be concluded that the suitable schreck WSS_2016_01 is located on the grassland area No.2 (German: Wiese Nr. 2). Grassland areas are optimal for our research question, since wild boars spoil the ground during their search for food.
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
 # Visualization
 
@@ -502,7 +502,7 @@ ggplot(st_intersection(crop_fanel, WSS_2016_01_bbox)) +
 ```
 
 
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.cap="Caroline"}
 # Caroline 
 
 Caroline <-  st_join(Caroline, crop_fanel)
@@ -544,10 +544,9 @@ ggplot(Caroline_2, aes(hour,perc, fill = Frucht)) +
   theme_classic() +
   labs(title = "Percentages of samples in a given crop per hour",subtitle = "Only showing the most common categories")
 
-
 ```
 
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.cap="Miriam"}
 
 # Miriam
 Miriam <-  st_join(Miriam, crop_fanel)
@@ -590,7 +589,7 @@ ggplot(Miriam_2, aes(hour,perc, fill = Frucht)) +
 
 ```
 
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.cap="Frida"}
 
 # Frida
 Frida <-  st_join(Frida, crop_fanel)
@@ -658,28 +657,6 @@ summary(a6)
 
 ```
 
-
-```{r, echo = FALSE, warning=FALSE, message=TRUE, fig.cap="Mean Distance to WSS_2016_01 Caroline, Miriam and Frida"}
-
-# Reihenfolge einfügen 
-bind_rows(Caroline_3, Miriam_3, Frida_3) %>%
-  ggplot() +
-  geom_boxplot(aes(Schreck, perc)) +
-  facet_wrap(~Schreck) +
-  labs(title = "Mean Perc to WSS_2016_01 on diffrent Modus")+
-  xlab("Modus") + ylab("Perc")
-
-
-```
-
-
-
-
-
-Calculation approach 2: WSS_2016_01 was on for 19 days consecutive. So that a comparison has sense, we filter the period from 19 days before the schreck was turned on and 19 days after!
-
-Statistische Test? oder nur vergleich der Anzahl Punkte?
-
 Streifgebiet
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
@@ -734,8 +711,6 @@ Frida_approach2 <- Frida %>%
 
 ```
 
-
-
 ## Discussion
 
 -only female wildboars
@@ -744,8 +719,8 @@ Frida_approach2 <- Frida %>%
 
 ## Reference
 
--Säugetieratlas
-- Forschungsprojekt: Prävention von Wildschweinschäden in der Landwirtschaft, Stefan Suter 2013 https://www.aramis.admin.ch/Default?DocumentID=3369&Load=true
+* Säugetieratlas
+* Forschungsprojekt: Prävention von Wildschweinschäden in der Landwirtschaft, Stefan Suter 2013 https://www.aramis.admin.ch/Default?DocumentID=3369&Load=true
 
 ## Appendix
 
