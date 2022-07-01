@@ -375,7 +375,7 @@ Further analyses with the help of plots show that especially the three wild boar
 
 ### Method 1
 
-Der Boxplot sowie die statische Auswertung der Einfaktoriellen Anova haben ergeben, dass es sich hierbei um einen signifikanten Unterschied in der Mittleren Distanz zum Schreck WSS_20216_01 in den verschiedenen Modus gibt. Aufgrund dieser Methode ist bestätigt, dass der Schreck wirkung auf die Wildschweine zeigt. 
+The boxplot as well as the static evaluation of the single factorial anova showed that there is a significant difference in the mean distance to the scare WSS_20216_01 in the time periods. Based on this method, it is confirmed that the scare has an effect on the wild boars.
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
 ####################################################################################
@@ -478,7 +478,6 @@ summary(a3)
 
 ### Method 2
 
-
 Methode 2
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
@@ -502,14 +501,13 @@ ggplot(st_intersection(crop_fanel, WSS_2016_01_bbox)) +
 # Our schreck WSS_2016_01 is located in "Wiese number 2"
 ```
 
-Subsequently, to check for spatial overlap, the datasets of the 3 selected wild boars were merged with the dataset "Feldaufnahmen_Fanel". 
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
 # Caroline 
 
 Caroline <-  st_join(Caroline, crop_fanel)
 
-p1 <- ggplot(st_intersection(crop_fanel, WSS_2016_01_bbox, Caroline)) +
+ggplot(st_intersection(crop_fanel, WSS_2016_01_bbox, Caroline)) +
   geom_sf(aes(fill = Frucht)) +
   geom_sf(data = Caroline) +
   geom_sf(data = WSS_2016_01, color = "yellow") +
@@ -554,8 +552,7 @@ ggplot(Caroline_2, aes(hour,perc, fill = Frucht)) +
 # Miriam
 Miriam <-  st_join(Miriam, crop_fanel)
 
-
-p2<- ggplot(st_intersection(crop_fanel, WSS_2016_01_bbox, Miriam)) +
+ggplot(st_intersection(crop_fanel, WSS_2016_01_bbox, Miriam)) +
   geom_sf(aes(fill = Frucht)) +
   geom_sf(data = Miriam) +
   geom_sf(data = WSS_2016_01, color = "yellow") +
@@ -596,9 +593,7 @@ ggplot(Miriam_2, aes(hour,perc, fill = Frucht)) +
 ```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
 
 # Frida
-
 Frida <-  st_join(Frida, crop_fanel)
-
 
 ggplot(st_intersection(crop_fanel, WSS_2016_01_bbox, Frida)) +
   geom_sf(aes(fill = Frucht)) +
