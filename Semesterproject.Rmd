@@ -657,8 +657,7 @@ summary(a6)
 
 ```
 
-Streifgebiet
-
+Streifgebiet Test.
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
 
