@@ -147,7 +147,8 @@ wildschwein_overlap_temp %>%
   mutate(TierCollar = paste(TierName, CollarID)) %>%
   ggplot(aes(xmin = min, xmax = max, y = TierCollar)) +
   geom_errorbarh() +
-  facet_grid(Groups~., scales = "free_y", space = "free_y")
+  facet_grid(Groups~., scales = "free_y", space = "free_y") +
+  theme_minimal()
 
 ```
 
@@ -287,7 +288,7 @@ schreck2 <- left_join(schrecks,schreck_agenda,by="id")
 ```
 
 
-### Introduction of the methods
+### Methods
 
 For this study, two different methods with different approaches were selected in order to verify the effectiveness of the schreck. In order to compare both methods with each other, it was necessary to have the same initial situation and to use the same data. For this purpose, in a first step, a suitable schreck with a high coverage of different wild boar presence was selected on the basis of the introduced data sets. Afterwards, three wild boars were selected for this method comparison on the basis of the selected schreck. 
 
@@ -332,7 +333,7 @@ ggplot()+
 
 ```
 
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.cap="Trajectories from wild boar Caroline", fig.height=2}
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.cap="Trajectories from wild boar Caroline", fig.height=3}
 
 WSS_2016_01 <- schreck2 %>%
   filter(id == "WSS_2016_01")
@@ -343,7 +344,8 @@ bind_rows(Caroline,Miriam, Frida) %>%
   geom_sf() +
   geom_sf(data = schreck2, color = "red") +
   geom_sf(data = WSS_2016_01, color = "yellow") +
-  facet_wrap(~TierName)
+  facet_wrap(~TierName) +
+  theme_minimal()
 
 ```
 
@@ -464,12 +466,13 @@ bind_rows(Caroline, Miriam, Frida) %>%
   geom_boxplot(aes(Schreck, distance)) +
   facet_wrap(~TierName) +
   labs(title = "Mean distance to WSS_2016_01 on diffrent Modus")+
-  xlab("Modus") + ylab("Distance")
+  xlab("Modus") + ylab("Distance") +
+  theme_minimal()
 
 
 ```
 
-ANOVA
+ANOVA (One-Way)
 ```{r, echo = FALSE, warning=FALSE, message=TRUE, fig.show='hide'}
 
 # ANOVA Caroline
@@ -510,7 +513,9 @@ ggplot(st_intersection(crop_fanel, WSS_2016_01_bbox)) +
   geom_sf(data = WSS_2016_01) +
   # geom_sf_text(data = WSS_2016_01, aes(label = id), size=3, color= "white", check_overlap = TRUE)+
   geom_sf_text(aes(label = Frucht), size =1.2) +
-  labs(title = "Diffrent crop-types in Fenel", subtitle = "Schreck-Location WSS_2016_01")
+  labs(title = "Diffrent crop-types in Fenel", subtitle = "Schreck-Location WSS_2016_01") +
+  theme_minimal()
+  
   
 
 # Our schreck WSS_2016_01 is located in "Wiese number 2"
@@ -748,7 +753,8 @@ wildschwein_convex_hull %>%
   ggplot(aes(fill = factor(TierID))) + geom_sf(alpha = 0.1) +
   coord_sf(datum = 2056) +
   facet_wrap(~tiercollar) +
-  theme(legend.position = "none")
+  theme(legend.position = "none") +
+  theme_minimal()
 
 ```
 
@@ -788,7 +794,7 @@ ggplot(Caroline_2, aes(hour,perc, fill = Frucht)) +
   scale_x_continuous(name = "Time (rounded to the nearest hour)") +
   facet_wrap(~Schreck ) +
   theme_classic() +
-  labs(title = "Percentages of samples in a given crop per hour",subtitle = "Only showing the most common categories")
+  labs(title = "Most common percentages of samples in a given crop per hour",subtitle = "Caroline")
 
 ggplot(Miriam_2, aes(hour,perc, fill = Frucht)) +
   geom_col(width = 1) +
@@ -796,7 +802,7 @@ ggplot(Miriam_2, aes(hour,perc, fill = Frucht)) +
   scale_x_continuous(name = "Time (rounded to the nearest hour)") +
   facet_wrap(~Schreck ) +
   theme_classic() +
-  labs(title = "Percentages of samples in a given crop per hour",subtitle = "Only showing the most common categories")
+  labs(title = "Most common percentages of samples in a given crop per hour",subtitle = "Miriam")
 
 ggplot(Frida_2, aes(hour,perc, fill = Frucht)) +
   geom_col(width = 1) +
@@ -804,7 +810,7 @@ ggplot(Frida_2, aes(hour,perc, fill = Frucht)) +
   scale_x_continuous(name = "Time (rounded to the nearest hour)") +
   facet_wrap(~Schreck ) +
   theme_classic() +
-  labs(title = "Percentages of samples in a given crop per hour",subtitle = "Only showing the most common categories")
+  labs(title = "Most common percentages of samples in a given crop per hour",subtitle = "Frida")
 
 ```
 
