@@ -38,7 +38,8 @@ ipak(packages)
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
 
-# Picture
+# cover picture / plot "home range of the three wild boars"
+
 
 ```
 
@@ -91,6 +92,7 @@ knitr::kable(head(schreck_locations), caption = "sample of dataset schreck:locat
 knitr::kable(head(schreck_agenda), caption = "sample of dataset schreck_agenda")
 
 ```
+
 
 
 ### Pre-processing
@@ -289,7 +291,7 @@ schreck2 <- left_join(schrecks,schreck_agenda,by="id")
 
 For this study, two different methods with different approaches were selected in order to verify the effectiveness of the schreck. In order to compare both methods with each other, it was necessary to have the same initial situation and to use the same data. For this purpose, in a first step, a suitable schreck with a high coverage of different wild boar presence was selected on the basis of the introduced data sets. Afterwards, three wild boars were selected for this method comparison on the basis of the selected schreck. 
 
-For our analysis, based on the above criteria, the scare **WSS_2016_01** as well as the three wild boars **Caroline, Miriam and Frida** were selected as an ideal starting point for the method comparison. The following plot shows the trajectories of the three boars represented as black points. WSS_2016_01 is shown as a yellow dot. The  red dots indicate other schreck-locations, which are not as suitable for our analysis as WSS_2016_01 and are therefore discarded.
+For our analysis, based on the above criteria, the scare **WSS_2016_01** as well as the three wild boars **Caroline, Miriam and Frida** were selected as an ideal starting point for the method comparison. The following plot shows the trajectories of the three boars represented as black points. WSS_2016_01 is shown as a yellow dot. The  red dots indicate other schreck-locations, which are not as suitable for our analysis as WSS_2016_01 and are therefore discarded. Appendix B shows an interactive map of the three selected wild boar home ranges.
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
 ## plotting single trajectories with schreck-locations
@@ -354,7 +356,7 @@ By looking at the scare data it turned out that the scare was powered on for som
 
 * **Methode (1):** The first approach compares the mean distance between wild boar and schreck-locations in the three different time periods. For this purpose, the distances from all data points of the three wild boars to the scare were calculated. These distances were afterwards statistically compared by using an one-way anova and a boxplot.
 
-* **Methode (2):** The second approach analyzes the presence of wild boars by selected agricultural fields. Therefore, the data package "Feldaufnahmen_Fanel" was additionally used, which subdivides the land cover resp. the type of agricultural area of the nature reserve Fanel. It is examined which wild boars were observed in the selected field before the activation of the scare and if and how often they were observed in the same field after the activation. Based on this analysis, a conclusion was  made by using as well an one-way anova and a boxplot.
+* **Methode (2):** The second approach analyzes the presence of wild boars by selected agricultural fields. Therefore, the data package "Feldaufnahmen_Fanel" was additionally used, which subdivides the land cover resp. the type of agricultural area of the nature reserve Fanel. It is examined which wild boars were observed in the selected field before the activation of the scare and if and how often they were observed in the same field after the activation.
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
 
@@ -445,7 +447,18 @@ ggplot(Frida, aes(Schreck, distance)) +
 
 ```{r echo=FALSE, fig.cap="Mean Distance to WSS_2016_01 Caroline", message=FALSE, warning=FALSE}
 
-# Reihenfolge einfügen
+# Factor ~Schreck with levels
+Caroline$Schreck<- as.factor(Caroline$Schreck)
+Caroline$Schreck<- fct_relevel(Caroline$Schreck, "off before", "on", "off after")
+
+Miriam$Schreck<- as.factor(Miriam$Schreck)
+Miriam$Schreck<- fct_relevel(Miriam$Schreck, "off before", "on", "off after")
+
+Frida$Schreck<- as.factor(Frida$Schreck)
+Frida$Schreck<- fct_relevel(Frida$Schreck, "off before", "on", "off after")
+
+
+# Boxplot of all tree wild boars
 bind_rows(Caroline, Miriam, Frida) %>%
   ggplot() +
   geom_boxplot(aes(Schreck, distance)) +
@@ -456,6 +469,7 @@ bind_rows(Caroline, Miriam, Frida) %>%
 
 ```
 
+ANOVA
 ```{r, echo = FALSE, warning=FALSE, message=TRUE, fig.show='hide'}
 
 # ANOVA Caroline
@@ -479,10 +493,11 @@ summary(a3)
 
 ### Method 2
 
-The following plot shows a reduced extract of Fanel's land use area. Iit can be concluded that the suitable schreck WSS_2016_01 is located on the grassland area No.2 (German: Wiese Nr. 2). Grassland areas are optimal for our research question, since wild boars spoil the ground during their search for food.
-```{r, echo = FALSE, warning=FALSE, message=FALSE}
-# Visualization
+The following plot shows a reduced extract of Fanel's land use area. It can be concluded that the suitable schreck WSS_2016_01 is located on the grassland area No.2 (German: Wiese Nr. 2). Grassland areas are optimal for our research question, since wild boars spoil the ground during their search for food.
 
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+
+# Visualization
 WSS_2016_01 %>%
   st_buffer(500) %>% 
   st_bbox() %>%
@@ -501,10 +516,11 @@ ggplot(st_intersection(crop_fanel, WSS_2016_01_bbox)) +
 # Our schreck WSS_2016_01 is located in "Wiese number 2"
 ```
 
+The data frames from the three wild boars were joined with the "crop_fanel" data frame. From this, it was possible to calculate how often the three wild boars were present in the grassland area at the respective time periods. Appendix C shows the percentage presence of the three wild boars in the most frequently used agricultural areas in Fenel.
 
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.cap="Caroline"}
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
+
 # Caroline 
-
 Caroline <-  st_join(Caroline, crop_fanel)
 
 ggplot(st_intersection(crop_fanel, WSS_2016_01_bbox, Caroline)) +
@@ -514,8 +530,8 @@ ggplot(st_intersection(crop_fanel, WSS_2016_01_bbox, Caroline)) +
   geom_sf_text(aes(label = Frucht), size =1.2) +
   labs(title = "Trajectorie of wild boar Caroline an diffrent crop types", subtitle = "Schreck-Location   WSS_2016_01 in yellow")
   
-
 # Our schreck WSS_2016_01 is located in "Wiese number 2"
+
 
 # Visual exploration for Caroline (only most relevant "Frucht" displayed!!!)
 Caroline_2 <- Caroline %>%
@@ -535,18 +551,9 @@ Caroline_2 <- Caroline %>%
     Frucht = fct_reorder(Frucht, n,sum, desc = TRUE)
   )
 
-
-ggplot(Caroline_2, aes(hour,perc, fill = Frucht)) +
-  geom_col(width = 1) +
-  scale_y_continuous(name = "Percentage", labels = scales::percent_format()) +
-  scale_x_continuous(name = "Time (rounded to the nearest hour)") +
-  facet_wrap(~Schreck ) +
-  theme_classic() +
-  labs(title = "Percentages of samples in a given crop per hour",subtitle = "Only showing the most common categories")
-
 ```
 
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.cap="Miriam"}
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
 
 # Miriam
 Miriam <-  st_join(Miriam, crop_fanel)
@@ -577,19 +584,9 @@ Miriam_2 <- Miriam %>%
     Frucht = fct_reorder(Frucht, n,sum, desc = TRUE)
   )
 
-
-ggplot(Miriam_2, aes(hour,perc, fill = Frucht)) +
-  geom_col(width = 1) +
-  scale_y_continuous(name = "Percentage", labels = scales::percent_format()) +
-  scale_x_continuous(name = "Time (rounded to the nearest hour)") +
-  facet_wrap(~Schreck ) +
-  theme_classic() +
-  labs(title = "Percentages of samples in a given crop per hour",subtitle = "Only showing the most common categories")
-
-
 ```
 
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.cap="Frida"}
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
 
 # Frida
 Frida <-  st_join(Frida, crop_fanel)
@@ -619,66 +616,12 @@ Frida_2 <- Frida %>%
     Frucht = fct_reorder(Frucht, n,sum, desc = TRUE)
   )
 
-
-ggplot(Frida_2, aes(hour,perc, fill = Frucht)) +
-  geom_col(width = 1) +
-  scale_y_continuous(name = "Percentage", labels = scales::percent_format()) +
-  scale_x_continuous(name = "Time (rounded to the nearest hour)") +
-  facet_wrap(~Schreck ) +
-  theme_classic() +
-  labs(title = "Percentages of samples in a given crop per hour",subtitle = "Only showing the most common categories")
-
 ```
 
-```{r echo=FALSE, fig.show='hide', message=TRUE, warning=FALSE}
 
-# ANOVA
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.show='hide'}
 
-Caroline_3 <- Caroline_2 %>%
-  filter(Frucht == "Wiese")
-  
-Miriam_3 <- Miriam_2 %>%
-  filter(Frucht == "Wiese")
-
-Frida_3 <- Frida_2 %>%
-  filter(Frucht == "Wiese")
-
-# Caroline
-a4 <- aov(perc~Schreck, data = Caroline_3)
-summary(a4)
-
-# Miriam
-a5 <- aov(perc~Schreck, data = Miriam_3)
-summary(a5)
-
-# Frida
-a6 <- aov(perc~Schreck, data = Frida_3)
-summary(a6)
-
-```
-
-Streifgebiet Test.
-
-```{r, echo = FALSE, warning=FALSE, message=FALSE}
-
-###  Visualization of the "Streifgebiet"
-# Calculate Convex Hull for the 3 selected wild boars
-wildschwein_BE_spatial_smry <- wildschwein_BE_spatial %>%
-  filter(TierName %in% c("Caroline", "Miriam", "Frida")) %>%
-  group_by(TierName) %>%
-  summarise()
-
-mcp <- st_convex_hull(wildschwein_BE_spatial_smry) 
-
-# Import raster data
-pk100_BE <- terra::rast("pk100_BE (2).tif")
-
-# Plot interactive map
-tmap_mode("view")
-tm_shape(mcp) +
-  tm_polygons(col = "TierName",alpha = 0.4,border.col = "red") +
-  tm_legend(bg.color = "white") 
-
+# Calculation presence of the three wild boars in the grassland 2 by the three time periods
 
 # Caroline 
 Caroline_approach2 <- Caroline %>%
@@ -711,20 +654,79 @@ Frida_approach2 <- Frida %>%
 
 ```
 
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.show='hide'}
+
+# Add name of wild boar into the df
+Caroline_approach2$TierName <- ("Caroline")
+Miriam_approach2$TierName <- ("Miriam")
+Frida_approach2$TierName <- ("Frida")
+
+# Caroline did not appear anymore after schreck was on = data = 0
+Caroline_missing <- data.frame(Schreck=c("on", "off after"),
+                               FieldID=c(2,2),
+                               total=c(0,0),
+                               TierName=c("Caroline","Caroline")
+                               )
+
+# All df's as one (Method 2)
+all_m2 <- bind_rows(Caroline_approach2, Miriam_approach2, Frida_approach2, Caroline_missing) 
+
+# Factor ~Schreck with levels
+all_m2$Schreck<- as.factor(all_m2$Schreck)
+all_m2$Schreck<- fct_relevel(all_m2$Schreck, "off before", "on", "off after")
+
+# Plot of all tree wild boars
+  ggplot(all_m2) +
+  geom_point(aes(Schreck, total)) +
+  facet_wrap(~TierName) +
+  labs(title = "Presencen in grassland #2 in diffrent time period", subtitle = "Schreck time periods: 19 days")+
+  xlab("Modus") + ylab("Presence in counted points")
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Presence of wild boars in the grassland area No.2 in different periods of time"}
+
+# Visualization
+ggplot(all_m2, aes(x = Schreck, y = total, fill = TierName)) +
+geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(label=total, vjust = 3), position = position_dodge(width = 0.9)) +
+  scale_fill_manual("Wild boar", values = c("Caroline" = "coral", "Miriam" = "darkseagreen2", "Frida" = "aquamarine4")) +
+   labs(title = "Presence of wild boars in the grassland area No.2 in different periods of time", subtitle = "Schreck time periods: 19 days") +
+  xlab("Modus") + ylab("Presence in counted point") +
+   theme_minimal()
+
+```
+
+
 ## Discussion
 
--only female wildboars
--analyse 98 to 19 to three
--
+### Conclusion of the results
+
+The evaluation of both methods show that the schreck had different effects between the two methods but also among the wild boars themselves. 
+
+Method 1 shows that probably Caroline was deterred the most from the schreck, as her mean distance to the schreck increased significantly when the schreck was turned on (2nd time period). When the schreck was turned off again (3rd time period), her mean distance to the schreck increased again, but remained significantly greater than in the 1st time period before the schreck was on. Miriam also shows a positive effect on the scschreckare, but this is significantly smaller compared to Caroline. Miriam's distance increased minimally when the schreck was on (2nd time period). After that, the distance continued to increase in the 3rd time period. For Frida the schreck had a completely opposite effect. Her distance to the schreck decreased when the schreck was on (2nd time period) and increased when the schreck was off again (3rd time period). Here, it could almost be assumed that she was attracted by the schreck 
+The conclusion that can be drawn from method 1 is that the schreck worked for Caroline and Miriam, but for Miriam only to a small extent. In Frida's case, the schreck did not work at all. 
+
+The evaluations of method 2 show that Caroline was on grassland area no. 2 in the 1st time period. However, she did not appear in the other two time periods, which indicates the best possible effect of the schreck The two other wild boars Frida and Miriam showed a similar behavior. Both were in the 1st time period at the most on the grassland area. When the schreck started, their presence reduced though. In the 3rd time period their presence was finally the least.
+
+If we want to judge the effectiveness of a schreck, there are two aspects to consider. On the one hand, it is the immediate expulsion of the wild boars with the schreck-sound. On the other hand, it is the long-term deterrence of the animals to come near the schreck again. The immediate expulsion of the wild boars worked in method 1 with Caroline and Frida. In method 2 it succeeded with all wild boars. The effect of long-term deterrence was only minimally seen in method 1 with Miriam. In method 2, all wild animals were deterred in the long term from returning to the schreck. Finally, it can be concluded that method 2 delivers a better result. However, only 1 schreck and the behavior of three wild boars were studied in this work. To be able to make a qualitative statement about the effect of the schreck, further analyses are needed. As already mentioned in the chapter "Problems and Limitations", these are three female wild boars, whose behavior differs with males and juveniles. For this reason, it is also essential to include them in further analyses. 
+
+
+### Conclusion of the methods
+
+Both methods compare interesting aspects of the behavior of wild boars. The method 1 has the advantage to include far distances also outside a certain area in the analysis. In method 2 it was only counted if the wild boars were on the selected area. Whether they were immediately on the surrounding area was not evident in this analysis. Another advantage of method 1 is that it was confirmed by a statistical test. Disadvantages of method 1 show the large number of outliers that were seen in practically all wildlife. Method 2 examines the problem in relation to an area, which is also of considerable use in reality. The damage caused by the wild boars is related to certain types of areas. Using method 2, an effect can be selectively predicted. Since a wild boar that is in the vicinity is more likely to return to the area than one that is several km away, it would be useful to include a neighborhood analysis in a follow-up study as an extension and strengthening of method 2.
+
 
 ## Reference
 
-* Säugetieratlas
-* Forschungsprojekt: Prävention von Wildschweinschäden in der Landwirtschaft, Stefan Suter 2013 https://www.aramis.admin.ch/Default?DocumentID=3369&Load=true
+* Graf, Roland; Fischer, Claude, Hrsg., 2021. Atlas der Säugetiere : Schweiz und Liechtenstein. Bern: Haupt, Schweizerische Gesellschaft für Wildtierbiologie. ISBN 978-3-258-08178-6.
+* Suter, S. (2013): Forschungsprojekt: Prävention von Wildschweinschäden in der Landwirtschaft https://www.aramis.admin.ch/Default?DocumentID=3369&Load=true
+
+
 
 ## Appendix
 
-Appendix A
+**Appendix A**
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.cap="Spaital overlap from 19 wild boars in the region Fenel"}
 
@@ -750,5 +752,60 @@ wildschwein_convex_hull %>%
 
 ```
 
+**Appendix B**
+
+```{r}
+# Calculate home ranges
+# Calculate Convex Hull for the 3 selected wild boars
+
+wildschwein_BE_spatial_smry <- wildschwein_BE_spatial %>%
+  filter(TierName %in% c("Caroline", "Miriam", "Frida")) %>%
+  group_by(TierName) %>%
+  summarise()
+
+mcp <- st_convex_hull(wildschwein_BE_spatial_smry) 
+
+# Import raster data
+pk100_BE <- terra::rast("pk100_BE (2).tif")
+
+# Plot interactive map
+tmap_mode("view")
+
+tm_shape(mcp) +
+  tm_polygons(col = "TierName",alpha = 0.4,border.col = "red") +
+  tm_legend(bg.color = "white")
+```
+
+**Appendix C**
+
+```{r}
+
+# the percentage presence of the three wild boars in the most frequently used agricultural areas
+
+ggplot(Caroline_2, aes(hour,perc, fill = Frucht)) +
+  geom_col(width = 1) +
+  scale_y_continuous(name = "Percentage", labels = scales::percent_format()) +
+  scale_x_continuous(name = "Time (rounded to the nearest hour)") +
+  facet_wrap(~Schreck ) +
+  theme_classic() +
+  labs(title = "Percentages of samples in a given crop per hour",subtitle = "Only showing the most common categories")
+
+ggplot(Miriam_2, aes(hour,perc, fill = Frucht)) +
+  geom_col(width = 1) +
+  scale_y_continuous(name = "Percentage", labels = scales::percent_format()) +
+  scale_x_continuous(name = "Time (rounded to the nearest hour)") +
+  facet_wrap(~Schreck ) +
+  theme_classic() +
+  labs(title = "Percentages of samples in a given crop per hour",subtitle = "Only showing the most common categories")
+
+ggplot(Frida_2, aes(hour,perc, fill = Frucht)) +
+  geom_col(width = 1) +
+  scale_y_continuous(name = "Percentage", labels = scales::percent_format()) +
+  scale_x_continuous(name = "Time (rounded to the nearest hour)") +
+  facet_wrap(~Schreck ) +
+  theme_classic() +
+  labs(title = "Percentages of samples in a given crop per hour",subtitle = "Only showing the most common categories")
+
+```
 
 
